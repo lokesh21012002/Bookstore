@@ -3,4 +3,4 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'name')
+    list_display = ('id','email', 'name', 'created_at', 'updated_at')
