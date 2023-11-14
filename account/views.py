@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserRegistrationSerializer, UserLoginSerializer
-from .models import User
+from .serializers import UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
+from .models import User, Buyer, Seller
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
@@ -17,12 +17,29 @@ def getToken(User):
 
 class Register(APIView):
     def post(self, request):
-        serialize = UserRegistrationSerializer(data=request.data)
-        if serialize.is_valid(raise_exception=True):
-            user = serialize.save()
-            token = getToken(user)
-            return Response({'token' : token, 'status': 'ok', 'message' : 'User created successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
-        return Response(serialize.errors, status=status.HTTP_401_UNAUTHORIZED)
+
+        userdata = request.data['userdata']
+        roledata = request.data['roledata']
+        buyer = True if userdata['role'] == 'Buyer' else False
+
+        userserialize = UserRegistrationSerializer(data=userdata)
+        roleserializer = None
+
+        if userserialize.is_valid(raise_exception=True):
+
+            if buyer:
+                roleserializer = BuyerSerializer(data=roledata)
+            else:
+                roleserializer = SellerSerializer(data=roledata)
+
+            if roleserializer.is_valid(raise_exception=True):
+                user = userserialize.save()
+                roleserializer.validated_data['user'] = user
+                roleserializer.save()
+                token = getToken(user)
+                return Response({'token' : token, 'status': 'ok', 'message' : 'User created successfully', 'userdata' : userserialize.data, 'roledata' : roleserializer.data}, status=status.HTTP_200_OK)
+        
+        return Response(userserialize.errors, status=status.HTTP_401_UNAUTHORIZED)
     
 class Login(APIView):
     def post(self, request):
@@ -36,3 +53,8 @@ class Login(APIView):
             return Response({'token' : token, 'status': 'ok', 'message' : 'User logged in successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
         return Response({'status': 'error', 'message' : 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     
+class GetBuyer(APIView):
+    def get(self, request):
+        buyer = Buyer.objects.all()
+        serializer = BuyerSerializer(buyer, many=True)
+        return Response({"data" :serializer.data}, status=status.HTTP_200_OK)

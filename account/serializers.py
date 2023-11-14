@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework import serializers
-from account.models import User
+from account.models import User, Buyer, Seller
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -26,6 +26,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
   def create(self, validate_data):
     return User.objects.create_user(**validate_data)
+  
+class BuyerSerializer(serializers.ModelSerializer):
+  user = UserRegistrationSerializer()
+  class Meta:
+    model = Buyer
+    fields = ['user','city','state','country','landmark']
+
+class SellerSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Seller
+    fields = ['storename','productsold']
   
 class UserLoginSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(max_length=255)
