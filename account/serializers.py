@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-
 from rest_framework import serializers
 from account.models import User
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
@@ -12,7 +11,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
   password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
   class Meta:
     model = User
-    fields=['email', 'name', 'password', 'password2', 'tc']
+    fields=['email', 'name', 'password', 'password2', 'role']
     extra_kwargs={
       'password':{'write_only':True}
     }
