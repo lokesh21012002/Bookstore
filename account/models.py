@@ -5,7 +5,7 @@ from book.models import Book
 
 #  Custom User Manager
 class UserManager(BaseUserManager):
-  def create_user(self, email, name, role, tc = True, password=None, password2=None):
+  def create_user(self, email, name, role, password=None, password2=None):
       """
       Creates and saves a User with the given email, name, tc and password.
       """
@@ -15,7 +15,6 @@ class UserManager(BaseUserManager):
       user = self.model(
           email=self.normalize_email(email),
           name=name,
-          tc=tc,
           role=role
       )
 
@@ -23,7 +22,7 @@ class UserManager(BaseUserManager):
       user.save(using=self._db)
       return user
 
-  def create_superuser(self, email, name, tc = True, password=None, role="Buyer"):
+  def create_superuser(self, email, name, password=None, role="Buyer"):
       """
       Creates and saves a superuser with the given email, name, tc and password.
       """
@@ -31,7 +30,6 @@ class UserManager(BaseUserManager):
           email,
           password=password,
           name=name,
-          tc=tc,
           role=role
       )
       user.is_admin = True
@@ -46,7 +44,7 @@ class User(AbstractBaseUser):
       unique=True,
   )
   name = models.CharField(max_length=200)
-  role = models.CharField(max_length=100, default='Buyer')
+  role = models.CharField(max_length=100, default="Buyer")
   tc = models.BooleanField(default=True)
   is_active = models.BooleanField(default=True)
   is_admin = models.BooleanField(default=False)
@@ -56,7 +54,7 @@ class User(AbstractBaseUser):
   objects = UserManager()
 
   USERNAME_FIELD = 'email'
-  REQUIRED_FIELDS = ['name', 'tc']
+  REQUIRED_FIELDS = ['name', 'role']
 
   def __str__(self):
       return self.email
@@ -99,7 +97,7 @@ class Seller(models.Model):
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
-class Orders(models.Model):
+class Order(models.Model):
   buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)
   seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
   book = models.ForeignKey(Book, on_delete=models.CASCADE)
