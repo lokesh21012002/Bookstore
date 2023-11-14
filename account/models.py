@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser
 
+from book.models import Book
+
 #  Custom User Manager
 class UserManager(BaseUserManager):
   def create_user(self, email, name, tc = True, password=None, password2=None):
@@ -75,5 +77,33 @@ class User(AbstractBaseUser):
 class PhoneNumber(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   phone_number = models.CharField(max_length=50)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+class Buyer(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  city = models.CharField(max_length=100)
+  state = models.CharField(max_length=100)
+  country = models.CharField(max_length=100)
+  landmark = models.CharField(max_length=100)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+class Seller(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  storename = models.CharField(max_length=100)
+  productsold = models.CharField(max_length=100)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+class Orders(models.Model):
+  buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)
+  seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
+  book = models.ForeignKey(Book, on_delete=models.CASCADE)
+  address = models.CharField(max_length=100)
+  status = models.BooleanField(default=False)
+  total = models.IntegerField()
+  quantity = models.IntegerField()
+  totalamount = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
