@@ -71,3 +71,9 @@ class User(AbstractBaseUser):
       "Is the user a member of staff?"
       # Simplest possible answer: All admins are staff
       return self.is_admin
+  
+class PhoneNumber(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  phone_number = models.CharField(max_length=50)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
