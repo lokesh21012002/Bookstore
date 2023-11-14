@@ -3,7 +3,7 @@ from .models import User, PhoneNumber, Buyer, Seller, Orders
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id','email', 'password', 'name', 'created_at', 'updated_at')
+    list_display = ('id','email', 'role', 'name', 'created_at', 'updated_at')
 
 @admin.register(PhoneNumber)
 class PhoneNumberAdmin(admin.ModelAdmin):
