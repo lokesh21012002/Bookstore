@@ -15,7 +15,7 @@ class BuyerAdmin(admin.ModelAdmin):
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('id','user', 'storename', 'productsold', 'created_at', 'updated_at')
+    list_display = ('id','user', 'storename', 'totalproductsold', 'created_at', 'updated_at')
 
 @admin.register(Order)
 class OrdersAdmin(admin.ModelAdmin):

@@ -53,8 +53,3 @@ class Login(APIView):
             return Response({'token' : token, 'status': 'ok', 'message' : 'User logged in successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
         return Response({'status': 'error', 'message' : 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     
-class GetBuyer(APIView):
-    def get(self, request):
-        buyer = Buyer.objects.all()
-        serializer = BuyerSerializer(buyer, many=True)
-        return Response({"data" :serializer.data}, status=status.HTTP_200_OK)

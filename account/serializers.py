@@ -28,15 +28,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     return User.objects.create_user(**validate_data)
   
 class BuyerSerializer(serializers.ModelSerializer):
-  user = UserRegistrationSerializer()
   class Meta:
     model = Buyer
-    fields = ['user','city','state','country','landmark']
+    fields = ['city','state','country','landmark']
 
 class SellerSerializer(serializers.ModelSerializer):
   class Meta:
     model = Seller
-    fields = ['storename','productsold']
+    fields = ['storename','totalproductsold']
   
 class UserLoginSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(max_length=255)
