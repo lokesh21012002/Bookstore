@@ -1,8 +1,9 @@
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import BookSerializer
+from rest_framework.views import APIView
 
-class Book:
+class Book(APIView):
     def post(self, request):
         serialize = BookSerializer(data=request.data)
         if serialize.is_valid():
