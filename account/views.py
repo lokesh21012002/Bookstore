@@ -47,8 +47,8 @@ class Login(APIView):
         serialize.is_valid(raise_exception=True)
         email = serialize.data.get('email')
         password = serialize.data.get('password')
-        user = authenticate(email=email, password=password)
-        if user is not None:
+        user = User.objects.get(email=email)
+        if user is not None and user.password == password:
             token = getToken(user)
             return Response({'token' : token, 'status': 'ok', 'message' : 'User logged in successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
         return Response({'status': 'error', 'message' : 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -85,23 +85,33 @@ class UpdateUserViaRole(APIView):
                 serializer.save()
                 return Response({'status': 'ok', 'message' : 'User updated successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
 class UpdateUser(APIView):
     permission_classes = [IsAuthenticated]
     def put(self, request):
-        user, data = request.user, request.data
-        userserializer = UserRegistrationSerializer(user, data=data['userdata'], partial=True)
-        roleserializer = None
-        buyer = True if data['userdata']['role'] == 'Buyer' else False
-
-        if buyer:
-            roleserializer = BuyerSerializer(Buyer, data=data['roledata'], partial=True)
+        user = request.user
+        if user.role == 'Buyer':
+            buyer = Buyer.objects.get(user=user)
+            buyerSerializer = BuyerSerializer(buyer, data=request.data['roledata'], partial=True)
+            userSerializer = UserRegistrationSerializer(user, data=request.data['userdata'], partial=True)
+            if buyerSerializer.is_valid() and userSerializer.is_valid():
+                userSerializer.save()
+                buyerSerializer.save()
+                return Response({'status': 'ok', 'message' : 'User updated successfully', 'data' : userSerializer.data}, status=status.HTTP_200_OK)
+            return Response(buyerSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            roleserializer = SellerSerializer(Seller, data=data['roledata'], partial=True)
-
-        if userserializer.is_valid(raise_exception=True) and roleserializer.is_valid(raise_exception=True):
-            userserializer.save()
-            roleserializer.save()
-            return Response({'status': 'ok', 'message' : 'User updated successfully', 'data' : userserializer.data, 'roledata' : roleserializer.data}, status=status.HTTP_200_OK)
-
-        return Response(userserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            seller = Seller.objects.get(user=user)
+            sellerSerializer = SellerSerializer(seller, data=request.data['roledata'], partial=True)
+            userSerializer = UserRegistrationSerializer(user, data=request.data['userdata'], partial=True)
+            if sellerSerializer.is_valid() and userSerializer.is_valid():
+                userSerializer.save()
+                sellerSerializer.save()
+                return Response({'status': 'ok', 'message' : 'User updated successfully', 'data' : userSerializer.data}, status=status.HTTP_200_OK)
+            return Response(sellerSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class DeleteUser(APIView):
+    permission_classes = [IsAuthenticated]
+    def delete(self, request):
+        user = request.user
+        user.delete()
+        return Response({'status': 'ok', 'message' : 'User deleted successfully'}, status=status.HTTP_200_OK)
