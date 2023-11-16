@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework import serializers
-from account.models import User, Buyer, Seller
-from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from account.models import User, Buyer, Seller, Order
+from book.serializers import BookSerializer
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
   # We are writing this becoz we need confirm password field in our Registratin Request
@@ -44,3 +42,11 @@ class UserLoginSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields = ['email', 'password']
+
+class OrderSerializer(serializers.ModelSerializer):
+  buyer = BuyerSerializer(read_only=True, required=False)
+  seller = SellerSerializer(read_only=True, required=False)
+  book = BookSerializer(read_only=True, required=False)
+  class Meta:
+    model = Order
+    fields = '__all__'

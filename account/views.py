@@ -47,8 +47,8 @@ class Login(APIView):
         serialize.is_valid(raise_exception=True)
         email = serialize.data.get('email')
         password = serialize.data.get('password')
-        user = User.objects.get(email=email)
-        if user is not None and user.password == password:
+        user = authenticate(email=email, password=password)
+        if user:
             token = getToken(user)
             return Response({'token' : token, 'status': 'ok', 'message' : 'User logged in successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
         return Response({'status': 'error', 'message' : 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
