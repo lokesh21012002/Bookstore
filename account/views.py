@@ -128,7 +128,6 @@ class OrderView(APIView):
         serializer = OrderSerializer(orders, many=True)
         return Response({'status': 'ok', 'message' : 'Orders fetched successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
         
-
     def post(self, request):
         user = request.user
         jsondata = request.data
@@ -143,6 +142,13 @@ class OrderView(APIView):
         book = Book.objects.get(pk=bookid)
         seller = Seller.objects.get(pk=sellerid)
 
+        seller.totalproductsold += 1
+        seller.save()
+
+        book.totalsold += 1
+        book.totalavailable -= 1
+        book.save()
+
         jsondata['buyer'] = BuyerSerializer(buyer).data
         jsondata['seller'] = SellerSerializer(seller).data
         jsondata['book'] = BookSerializer(book).data
@@ -153,3 +159,40 @@ class OrderView(APIView):
             serializer.save()
             return Response({'status': 'ok', 'message' : 'Order placed successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request):
+        user = request.user
+        jsondata = request.data
+        if user.role == 'Seller':
+            return Response({'status': 'error', 'message' : 'Seller cannot update order'}, status=status.HTTP_400_BAD_REQUEST)
+        buyer = Buyer.objects.get(user=user)
+        print(buyer)
+        order = Order.objects.get(pk=buyer.pk)
+
+        if 'quantity' in jsondata:
+           jsondata['totalamount'] = jsondata['quantity'] * order.book.price 
+           if jsondata['quantity'] > order.book.totalavailable:
+               return Response({'status': 'error', 'message' : 'Quantity not available'}, status=status.HTTP_400_BAD_REQUEST)
+           if jsondata['quantity'] > order.quantity:
+               diff = jsondata['quantity'] - order.quantity
+               order.quantity -= diff
+               order.save()
+           if jsondata['quantity'] < order.quantity:
+               diff = order.quantity - jsondata['quantity']
+               order.quantity += diff
+               order.save()
+
+        serializer = OrderSerializer(order, data=jsondata, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': 'ok', 'message' : 'Order updated successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request):
+        user = request.user
+        if user.role == 'Seller':
+            return Response({'status': 'error', 'message' : 'Seller cannot delete order'}, status=status.HTTP_400_BAD_REQUEST)
+        buyer = Buyer.objects.get(user=user)
+        order = Order.objects.get(pk=buyer.pk)
+        order.delete()
+        return Response({'status': 'ok', 'message' : 'Order deleted successfully'}, status=status.HTTP_200_OK)

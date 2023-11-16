@@ -90,7 +90,7 @@ class Buyer(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return str(self.user.id)
+    return str(self.id)
 
 class Seller(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -100,7 +100,7 @@ class Seller(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return str(self.user.id)
+    return str(self.id)
 
 class Order(models.Model):
   buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)
