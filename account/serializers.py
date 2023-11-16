@@ -49,4 +49,4 @@ class OrderSerializer(serializers.ModelSerializer):
   book = BookSerializer(read_only=True, required=False)
   class Meta:
     model = Order
-    fields = '__all__'
+    fields = ['buyer', 'seller', 'book', 'address','quantity', 'totalamount']

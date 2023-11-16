@@ -19,4 +19,4 @@ class SellerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrdersAdmin(admin.ModelAdmin):
-    list_display = ('id','buyer', 'seller', 'book', 'address', 'status', 'quantity', 'totalamount', 'created_at', 'updated_at')
+    list_display = ('id','buyer', 'seller', 'book', 'address', 'status', 'quantity', 'created_at', 'updated_at')

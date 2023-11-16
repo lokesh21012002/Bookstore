@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
-from .models import User, Buyer, Seller
+from .serializers import OrderSerializer, UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
+from .models import Order, User, Buyer, Seller, Book
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
@@ -115,3 +115,35 @@ class DeleteUser(APIView):
         user = request.user
         user.delete()
         return Response({'status': 'ok', 'message' : 'User deleted successfully'}, status=status.HTTP_200_OK)
+    
+class OrderView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        user = request.user
+        buyer = Buyer.objects.get(user=user)
+        orders = Order.objects.filter(buyer=buyer)
+        serializer = OrderSerializer(orders, many=True)
+        return Response({'status': 'ok', 'message' : 'Orders fetched successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        user = request.user
+        jsondata = request.data
+
+        sellerid = jsondata['seller']
+        bookid = jsondata['book']
+
+        if user.role == 'Seller':
+            return Response({'status': 'error', 'message' : 'Seller cannot place order'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        buyer = Buyer.objects.get(user=user)
+        book = Book.objects.get(pk=bookid)
+
+        jsondata['buyer'] = buyer.id
+        jsondata['totalamount'] = book.price * jsondata['quantity']
+
+        serializer = OrderSerializer(data=jsondata)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': 'ok', 'message' : 'Order placed successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

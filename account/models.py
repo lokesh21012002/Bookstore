@@ -89,12 +89,18 @@ class Buyer(models.Model):
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
+  def __str__(self):
+    return str(self.user.id)
+
 class Seller(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   storename = models.CharField(max_length=100)
   totalproductsold = models.IntegerField(default=0)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
+
+  def __str__(self):
+    return str(self.user.id)
 
 class Order(models.Model):
   buyer = models.ForeignKey(Buyer, on_delete=models.CASCADE)

@@ -8,4 +8,5 @@ urlpatterns = [
     path('updateonrole/', views.UpdateUserViaRole.as_view(), name='update'),
     path('updateuser/', views.UpdateUser.as_view(), name='update'),
     path('delete/', views.DeleteUser.as_view(), name='delete'),
+    path('order/', views.OrderView.as_view(), name='order'),
 ]
