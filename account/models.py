@@ -102,7 +102,6 @@ class Order(models.Model):
   book = models.ForeignKey(Book, on_delete=models.CASCADE)
   address = models.CharField(max_length=100)
   status = models.BooleanField(default=False)
-  total = models.IntegerField()
   quantity = models.IntegerField()
   totalamount = models.IntegerField()
   created_at = models.DateTimeField(auto_now_add=True)

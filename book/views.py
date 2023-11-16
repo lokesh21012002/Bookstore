@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from account.models import Seller
+from account.serializers import SellerSerializer
 from .serializers import BookSerializer
 from rest_framework.views import APIView
 from .models import Book
@@ -81,6 +82,11 @@ class BookSeller(APIView):
         if user.role == 'Buyer':
             return Response({'status': 'error', 'message' : 'Buyer cannot fetch books'}, status=status.HTTP_400_BAD_REQUEST)
         seller = Seller.objects.get(user=user)
+        sellerserializer = SellerSerializer(seller)
         books = Book.objects.filter(seller=seller)
         serializer = BookSerializer(books, many=True)
-        return Response({'status': 'ok', 'message': 'Books fetched successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
+        data = {'data' : {
+            'books' : serializer.data,
+            'seller' : sellerserializer.data
+        }}
+        return Response({'status': 'ok', 'message': 'Books fetched successfully', 'data': data}, status=status.HTTP_200_OK)
