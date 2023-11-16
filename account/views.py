@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+from book.serializers import BookSerializer
 from .serializers import OrderSerializer, UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
 from .models import Order, User, Buyer, Seller, Book
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -125,6 +127,7 @@ class OrderView(APIView):
         orders = Order.objects.filter(buyer=buyer)
         serializer = OrderSerializer(orders, many=True)
         return Response({'status': 'ok', 'message' : 'Orders fetched successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
+        
 
     def post(self, request):
         user = request.user
@@ -138,8 +141,11 @@ class OrderView(APIView):
         
         buyer = Buyer.objects.get(user=user)
         book = Book.objects.get(pk=bookid)
+        seller = Seller.objects.get(pk=sellerid)
 
-        jsondata['buyer'] = buyer.id
+        jsondata['buyer'] = BuyerSerializer(buyer).data
+        jsondata['seller'] = SellerSerializer(seller).data
+        jsondata['book'] = BookSerializer(book).data
         jsondata['totalamount'] = book.price * jsondata['quantity']
 
         serializer = OrderSerializer(data=jsondata)
