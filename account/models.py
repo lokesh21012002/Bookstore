@@ -4,7 +4,7 @@ from book.models import Book
 
 #  Custom User Manager
 class UserManager(BaseUserManager):
-  def create_user(self, email, name, role, password=None, password2=None):
+  def create_user(self, email, avatar, name, role, password=None, password2=None):
       """
       Creates and saves a User with the given email, name, tc and password.
       """
@@ -14,7 +14,8 @@ class UserManager(BaseUserManager):
       user = self.model(
           email=self.normalize_email(email),
           name=name,
-          role=role
+          role=role,
+          avatar=avatar
       )
 
       user.set_password(password)

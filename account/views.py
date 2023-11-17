@@ -24,6 +24,10 @@ class Register(APIView):
         roledata = request.data['roledata']
         buyer = True if userdata['role'] == 'Buyer' else False
 
+        print(userdata)
+
+        userdata['avatar'] = "https://api.dicebear.com/6.x/pixel-art/svg?seed=" + userdata['name']
+
         userserialize = UserRegistrationSerializer(data=userdata)
         roleserializer = None
 
