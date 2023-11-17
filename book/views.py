@@ -1,6 +1,5 @@
 from rest_framework.response import Response
 from rest_framework import status
-
 from account.models import Seller
 from account.serializers import SellerSerializer
 from .serializers import BookSerializer
@@ -91,3 +90,4 @@ class BookSeller(APIView):
             'seller' : sellerserializer.data
         }}
         return Response({'status': 'ok', 'message': 'Books fetched successfully', 'data': data}, status=status.HTTP_200_OK)
+    
