@@ -44,7 +44,7 @@ class User(AbstractBaseUser):
   )
   name = models.CharField(max_length=200)
   role = models.CharField(max_length=100)
-  tc = models.BooleanField(default=True)
+  avatar = models.CharField(max_length=100)
   is_active = models.BooleanField(default=True)
   is_admin = models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now_add=True)
