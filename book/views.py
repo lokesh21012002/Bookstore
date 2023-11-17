@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from .models import Book
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated, BasePermission
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class IsAuthenticatedOrReadOnly(IsAuthenticated):
     def has_permission(self, request, view):
@@ -77,6 +78,8 @@ class BookView(APIView):
     
 class BookSeller(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
     def get(self, request):
         user = request.user
         if user.role == 'Buyer':

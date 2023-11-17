@@ -45,37 +45,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
     fields = ['email', 'password']
 
 class OrderSerializer(serializers.ModelSerializer):
-  buyer = BuyerSerializer(required=False)
-  seller = SellerSerializer(required=False)
-  book = BookSerializer(required=False)
   class Meta:
     model = Order
     fields = ['buyer', 'seller', 'book', 'address','quantity', 'totalamount']
-  def create(self, validated_data):
-        # Extract the nested serializer data
-        buyer_data = validated_data.pop('buyer', {})
-        seller_data = validated_data.pop('seller', {})
-        book_data = validated_data.pop('book', {})
-
-        # Ensure book data is present
-        if not book_data:
-            raise serializers.ValidationError("Book data is required.")
-
-        # Create or update Buyer instance
-        buyer_instance, _ = Buyer.objects.update_or_create(defaults=buyer_data, **buyer_data)
-
-        # Create or update Seller instance
-        seller_instance, _ = Seller.objects.update_or_create(defaults=seller_data, **seller_data)
-
-        # Create or update Book instance
-        book_instance, _ = Book.objects.update_or_create(defaults=book_data, **book_data)
-
-        # Create Order instance with related fields
-        order = Order.objects.create(
-            buyer=buyer_instance,
-            seller=seller_instance,
-            book=book_instance,
-            **validated_data
-        )
-
-        return order

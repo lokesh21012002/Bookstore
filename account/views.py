@@ -1,14 +1,29 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
-from book.serializers import BookSerializer
+from book.models import Invoice
+from book.serializers import BookSerializer, InvoiceSerializer
 from .serializers import OrderSerializer, UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
 from .models import Order, User, Buyer, Seller, Book
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.permissions import IsAuthenticated
+from reportlab.pdfgen import canvas
+import random
+from django.db import transaction
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+
+
+def generate_receipt_number(length=8):
+    # Generate a random receipt number with the specified length using digits
+    receipt_number = ''.join(random.choice('0123456789') for _ in range(length))
+
+    return receipt_number
+
 
 def getToken(User):
     genToken = RefreshToken.for_user(User)
@@ -140,28 +155,43 @@ class OrderView(APIView):
         bookid = jsondata['book']
 
         if user.role == 'Seller':
-            return Response({'status': 'error', 'message' : 'Seller cannot place order'}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response({'status': 'error', 'message': 'Seller cannot place an order'}, status=status.HTTP_400_BAD_REQUEST)
+
         buyer = Buyer.objects.get(user=user)
         book = Book.objects.get(pk=bookid)
         seller = Seller.objects.get(pk=sellerid)
 
-        seller.totalproductsold += 1
-        seller.save()
+        # Use a database transaction to ensure data consistency
+        with transaction.atomic():
+            seller.totalproductsold += 1
+            seller.save()
 
-        book.totalsold += jsondata['quantity']
-        book.totalavailable -= jsondata['quantity']
-        book.save()
+            book.totalsold += jsondata['quantity']
+            book.totalavailable -= jsondata['quantity']
+            book.save()
 
-        jsondata['buyer'] = BuyerSerializer(buyer).data
-        jsondata['seller'] = SellerSerializer(seller).data
-        jsondata['book'] = BookSerializer(book).data
-        jsondata['totalamount'] = book.price * jsondata['quantity']
+            jsondata['buyer'] = buyer.id
+            jsondata['seller'] = seller.id
+            jsondata['book'] = book.id
+            jsondata['totalamount'] = book.price * jsondata['quantity']
 
-        serializer = OrderSerializer(data=jsondata)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'status': 'ok', 'message' : 'Order placed successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
+
+            serializer = OrderSerializer(data=jsondata)
+            if serializer.is_valid():
+                print("HELLO")
+                orderdata = serializer.save()
+
+                invoicedata = {
+                    'order': orderdata.id,
+                    'receiptnumber': generate_receipt_number(),
+                    'amountpaid': orderdata.totalamount,
+                }
+
+                invoice_serializer = InvoiceSerializer(data=invoicedata)
+                if invoice_serializer.is_valid():
+                    invoice_serializer.save()
+                    return Response({'status': 'ok', 'message': 'Order placed successfully', 'data': serializer.data, 'invoice': invoice_serializer.data}, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request):
@@ -203,3 +233,93 @@ class OrderView(APIView):
         order = Order.objects.get(pk=buyer.pk)
         order.delete()
         return Response({'status': 'ok', 'message' : 'Order deleted successfully'}, status=status.HTTP_200_OK)
+    
+class GenerateBill(APIView):
+
+    def get(self, request, pk, *args, **kwargs):
+            # Create a file-like buffer to receive PDF data.
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="bill.pdf"'
+
+            # Create the PDF object, using the response object as its "file."
+            p = SimpleDocTemplate(response, pagesize=letter)
+
+            invoicedata = Invoice.objects.get(pk=pk)
+            orderdata = Order.objects.get(id=invoicedata.order.pk)
+
+            # Create data for the table
+            table_data = [
+                ["Receipt Number", str(invoicedata.receiptnumber)],
+                ["Amount Paid", str(invoicedata.amountpaid)],
+                ["Date", str(invoicedata.created_at.strftime('%Y-%m-%d'))],
+                ["Name", str(orderdata.buyer.user.name)],
+                ["Book Title", str(orderdata.book.title)],
+                ["Author", str(orderdata.book.author)],
+                ["Genre", str(orderdata.book.genre)],
+                ["Sold By", str(orderdata.seller.user.name)],
+                ["Quantity", str(orderdata.quantity)],
+                ["Price", str(orderdata.book.price)],
+                ["Address", str(orderdata.address)],
+                ["Status", "Delivered"],
+            ]
+
+            # Create the table
+            table = Table(table_data, colWidths=[200, 200], rowHeights=30)
+
+            # Style the table
+            style = TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.white),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),  # Add grid lines
+            ])
+            table.setStyle(style)
+
+            # Create a title above the table in the center
+            title = "Book Purchase Invoice"
+            title_style = TableStyle([
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 14),
+                ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ])
+            title_table = Table([[title]])
+            title_table.setStyle(title_style)
+
+            # Build the PDF
+            elements = [title_table, table]
+            p.build(elements)
+
+            return response
+
+
+
+    # def get(self, request, pk, *args, **kwargs):
+    #     # Create a file-like buffer to receive PDF data.
+    #     response = HttpResponse(content_type='application/pdf')
+    #     response['Content-Disposition'] = 'attachment; filename="bill.pdf"'
+
+    #     # Create the PDF object, using the response object as its "file."
+    #     p = canvas.Canvas(response)
+
+    #     invoicedata = Invoice.objects.get(pk=pk)
+    #     orderdata = Order.objects.get(id=invoicedata.order.pk)
+
+    #     # Draw things on the PDF. Here's where the PDF generation happens.
+    #     # See the ReportLab documentation for the full list of functionality.
+    #     p.drawString(100, 800, str(invoicedata.receiptnumber))
+    #     p.drawString(100, 700, str(invoicedata.amountpaid))
+    #     p.drawString(100, 600, str(orderdata.book.title))
+    #     p.drawString(100, 500, str(orderdata.quantity))
+    #     p.drawString(100, 400, "Delivered")
+
+
+    #     # Close the PDF object cleanly, and we're done.
+    #     p.showPage()
+    #     p.save()
+
+    #     return response
