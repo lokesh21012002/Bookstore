@@ -5,6 +5,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     price = models.IntegerField()
+    cover = models.FileField(upload_to='book_covers/')
     totalsold = models.IntegerField()
     totalavailable = models.IntegerField()
     genre = models.CharField(max_length=100)

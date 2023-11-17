@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
       user.save(using=self._db)
       return user
 
-  def create_superuser(self, email, name, password=None, role="Admin"):
+  def create_superuser(self, email, name, password=None, role="Admin", avatar="https://api.dicebear.com/6.x/pixel-art/svg?seed=admin"):
       """
       Creates and saves a superuser with the given email, name, tc and password.
       """
@@ -30,7 +30,8 @@ class UserManager(BaseUserManager):
           email,
           password=password,
           name=name,
-          role=role
+          role=role,
+          avatar=avatar
       )
       user.is_admin = True
       user.save(using=self._db)
