@@ -145,8 +145,8 @@ class OrderView(APIView):
         seller.totalproductsold += 1
         seller.save()
 
-        book.totalsold += 1
-        book.totalavailable -= 1
+        book.totalsold += jsondata['quantity']
+        book.totalavailable -= jsondata['quantity']
         book.save()
 
         jsondata['buyer'] = BuyerSerializer(buyer).data
@@ -166,21 +166,24 @@ class OrderView(APIView):
         if user.role == 'Seller':
             return Response({'status': 'error', 'message' : 'Seller cannot update order'}, status=status.HTTP_400_BAD_REQUEST)
         buyer = Buyer.objects.get(user=user)
-        print(buyer)
-        order = Order.objects.get(pk=buyer.pk)
+        order = Order.objects.get(buyer=buyer)
 
         if 'quantity' in jsondata:
+           book = order.book
+           print(book.totalavailable,book.totalsold)
            jsondata['totalamount'] = jsondata['quantity'] * order.book.price 
            if jsondata['quantity'] > order.book.totalavailable:
                return Response({'status': 'error', 'message' : 'Quantity not available'}, status=status.HTTP_400_BAD_REQUEST)
            if jsondata['quantity'] > order.quantity:
                diff = jsondata['quantity'] - order.quantity
-               order.quantity -= diff
-               order.save()
+               book.totalsold += diff
+               book.totalavailable -= diff
+               book.save()
            if jsondata['quantity'] < order.quantity:
                diff = order.quantity - jsondata['quantity']
-               order.quantity += diff
-               order.save()
+               book.totalsold -= diff
+               book.totalavailable += diff
+               book.save()
 
         serializer = OrderSerializer(order, data=jsondata, partial=True)
         if serializer.is_valid():
