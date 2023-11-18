@@ -1,3 +1,4 @@
+from django.http import QueryDict
 from rest_framework.response import Response
 from rest_framework import status
 from account.models import Seller

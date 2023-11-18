@@ -293,7 +293,6 @@ class GenerateBill(APIView):
             # Build the PDF
             elements = [title_table, table]
             p.build(elements)
-
             return response
 
 
