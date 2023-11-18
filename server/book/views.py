@@ -70,7 +70,10 @@ class BookView(APIView):
 
         if pk:
             book = Book.objects.get(pk=pk)
+            seller = Seller.objects.get(pk=book.seller.pk)
+            
             serializer = BookSerializer(book)
+
             return Response({'status': 'ok', 'message': 'Book fetched successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
         else:
             books = Book.objects.filter(filter_conditions)
@@ -79,7 +82,6 @@ class BookView(APIView):
     
 class BookSeller(APIView):
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
         user = request.user

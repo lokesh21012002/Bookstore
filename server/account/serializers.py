@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework import serializers
 from account.models import User, Buyer, Seller, Order
 from book.models import Book
-from book.serializers import BookSerializer
+from book.serializers import BookSerializer, SerializeSeller
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
   # We are writing this becoz we need confirm password field in our Registratin Request
@@ -25,7 +25,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
   def create(self, validate_data):
     return User.objects.create_user(**validate_data)
-  
+
 class BuyerSerializer(serializers.ModelSerializer):
   user = UserRegistrationSerializer(required=False)
   class Meta:
@@ -45,6 +45,18 @@ class UserLoginSerializer(serializers.ModelSerializer):
     fields = ['email', 'password']
 
 class OrderSerializer(serializers.ModelSerializer):
+  seller = serializers.SerializerMethodField('get_seller')
+  buyer = serializers.SerializerMethodField('get_buyer')
+  book = serializers.SerializerMethodField('get_book')
   class Meta:
     model = Order
     fields = ['buyer', 'seller', 'book', 'address','quantity', 'totalamount']
+
+  def get_seller(self, obj):
+        return SerializeSeller(obj.seller).data
+  
+  def get_buyer(self, obj):
+        return BuyerSerializer(obj.buyer).data
+  
+  def get_book(self, obj):
+        return BookSerializer(obj.book).data

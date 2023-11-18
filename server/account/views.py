@@ -79,7 +79,6 @@ class Profile(APIView):
     def get(self, request):
         user = request.user
         if user.role == 'Buyer':
-            print(user)
             buyer = Buyer.objects.get(user=user)
             serializer = BuyerSerializer(buyer)
             return Response({'status': 'ok', 'message' : 'User profile fetched successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
@@ -235,8 +234,15 @@ class OrderView(APIView):
         return Response({'status': 'ok', 'message' : 'Order deleted successfully'}, status=status.HTTP_200_OK)
     
 class GenerateBill(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk, *args, **kwargs):
+            
+            user = request.user
+
+            if user.role == 'Seller':
+                return Response({'status': 'error', 'message' : 'Seller cannot generate bill'}, status=status.HTTP_400_BAD_REQUEST)
+
             # Create a file-like buffer to receive PDF data.
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="bill.pdf"'
@@ -294,31 +300,3 @@ class GenerateBill(APIView):
             elements = [title_table, table]
             p.build(elements)
             return response
-
-
-
-    # def get(self, request, pk, *args, **kwargs):
-    #     # Create a file-like buffer to receive PDF data.
-    #     response = HttpResponse(content_type='application/pdf')
-    #     response['Content-Disposition'] = 'attachment; filename="bill.pdf"'
-
-    #     # Create the PDF object, using the response object as its "file."
-    #     p = canvas.Canvas(response)
-
-    #     invoicedata = Invoice.objects.get(pk=pk)
-    #     orderdata = Order.objects.get(id=invoicedata.order.pk)
-
-    #     # Draw things on the PDF. Here's where the PDF generation happens.
-    #     # See the ReportLab documentation for the full list of functionality.
-    #     p.drawString(100, 800, str(invoicedata.receiptnumber))
-    #     p.drawString(100, 700, str(invoicedata.amountpaid))
-    #     p.drawString(100, 600, str(orderdata.book.title))
-    #     p.drawString(100, 500, str(orderdata.quantity))
-    #     p.drawString(100, 400, "Delivered")
-
-
-    #     # Close the PDF object cleanly, and we're done.
-    #     p.showPage()
-    #     p.save()
-
-    #     return response
