@@ -8,3 +8,5 @@ class BookAdmin(admin.ModelAdmin):
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('id', 'order', 'receiptnumber', 'amountpaid', 'paymentmethod', 'created_at')
+
+    
