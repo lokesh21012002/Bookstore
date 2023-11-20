@@ -1,0 +1,34 @@
+.home{
+    background: darkslategrey;
+    width: 81vw;
+    height: 100%;
+    padding: .5em;
+}
+
+.authform{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.authform form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+}
+
+.authform form input{
+    padding: 1em;
+    width: 20%;
+}
+
+.authform form button{
+    padding: 1em;
+    width: 20%;
+}

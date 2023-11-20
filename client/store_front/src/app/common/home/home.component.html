@@ -1,0 +1,12 @@
+<div class="home">
+    <div class="authform">
+
+        <h1>LOGIN</h1>
+
+        <form method="POST" #authform="ngForm" (ngSubmit)="logIn(authform.value)">
+            <input type="email" name="email" ngModel placeholder="Enter Email">
+            <input type="password" name="password" ngModel placeholder="Enter Password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
