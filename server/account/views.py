@@ -37,9 +37,7 @@ class Register(APIView):
 
         userdata = request.data['userdata']
         roledata = request.data['roledata']
-        buyer = True if userdata['role'] == 'Buyer' else False
-
-        print(userdata)
+        buyer = True if userdata['role'] == 'buyer' else False
 
         userdata['avatar'] = "https://api.dicebear.com/6.x/pixel-art/svg?seed=" + userdata['name']
 
