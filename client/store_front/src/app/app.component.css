@@ -1,0 +1,15 @@
+.app {
+  background: black;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 4fr;
+}
+
+.header {
+  background: darkblue;
+}
+
+.dynamiccontent {
+  background: gray;
+}

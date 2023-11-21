@@ -1,0 +1,58 @@
+<header>
+    
+    <nav>
+
+        <div class="branding">
+    
+            <div class="product">
+                <h1>BOOKSTORE</h1>
+                <p>Online Book Store</p>
+            </div>
+    
+            <div class="logo">
+                <p>logo</p>
+            </div>
+        </div>
+    
+        <div class="dashboard">
+
+            <div *ngIf="!isLoggedIn" class="roledash">
+    
+                <a routerLink="/Home">Home</a>
+                <a href="#">Contact</a>
+                <a href="#">Books</a>
+                <a href="#">Cart</a>
+                <a href="#">About</a>
+    
+            </div>
+    
+            <div *ngIf="isLoggedIn && loginData && loginData.role === 'Buyer'" class="roledash">
+    
+                <a routerLink="/Home">Home</a>
+                <a href="#">Profile</a>
+                <a href="#">Your Orders</a>
+                <a href="#">Cart</a>
+                <a href="#">About</a>
+                <a (click)="logout()" routerLink="/">Logout</a>
+    
+            </div>
+    
+            <div *ngIf="isLoggedIn && loginData && loginData.role === 'Seller'" class="roledash">
+    
+                <a routerLink="/Home">Home</a>
+                <a href="#">Profile</a>
+                <a href="#">Add Items</a>
+                <a href="#">Your Items</a>
+                <a href="#">About</a>
+                <a (click)="logout()" routerLink="/">Logout</a>
+    
+            </div>
+    
+    
+        </div>
+    
+    </nav>
+    
+</header>
+
+
