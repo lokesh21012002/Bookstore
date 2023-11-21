@@ -69,7 +69,8 @@ class Login(APIView):
         user = authenticate(email=email, password=password)
         if user:
             token = getToken(user)
-            return Response({'token' : token, 'status': 'ok', 'message' : 'User logged in successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
+            userserializer = UserRegistrationSerializer(user)
+            return Response({'token' : token, 'status': 'ok', 'message' : 'User logged in successfully', 'user' : userserializer.data}, status=status.HTTP_200_OK)
         return Response({'status': 'error', 'message' : 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     
 class Profile(APIView):

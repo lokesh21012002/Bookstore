@@ -7,12 +7,15 @@ import { HeaderComponent } from './common/header/header.component';
 import { HomeComponent } from './common/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { UserauthComponent } from './userauth/userauth.component';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    UserauthComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +23,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [RouterLink],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

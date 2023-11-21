@@ -1,60 +1,7 @@
 <div class="home">
 
-    <!-- <div class="authform">
-        
-        <h1 *ngIf="!isRegistered">REGISTER</h1>
-        <h1 *ngIf="isRegistered">LOGIN</h1>
-
-        <form *ngIf="isRegistered" method="POST" #authform="ngForm" (ngSubmit)="logIn(authform.value)">
-            <input type="email" name="email" ngModel placeholder="Enter Email">
-            <input type="password" name="password" ngModel placeholder="Enter Password">
-            <button type="submit">Login</button>
-            <p (click) = "isRegistered = !isRegistered">Don't have an account? Register</p>
-        </form>
-
-        <form *ngIf="!isRegistered" method="POST" (ngSubmit)="register()">
-            
-            <input type="email" name="email" [(ngModel)]="userdata.email" placeholder="Enter Email">
-            <input type="text" name="name" [(ngModel)]="userdata.name" placeholder="Enter Full Name">
-            <input type="password" name="password" [(ngModel)]="userdata.password" placeholder="Enter Password">
-            <input type="password" name="password2" [(ngModel)]="userdata.password2" placeholder="Confirm Password">
-
-            <div class="rolechoices">
-
-                <label for="selectedRole">Select Role:</label>
-                <select name="selectedRole" [(ngModel)]="selectedRole">
-                    <option value="Buyer">Buyer</option>
-                    <option value="Seller">Seller</option>
-                </select>
-
-            </div>
-            
-            <div class="buyerdata" *ngIf="selectedRole === 'Buyer' ">
-
-                <input type="text" name="city" [(ngModel)]="roledata.city" placeholder="Enter City">
-                <input type="text" name="state" [(ngModel)]="roledata.state" placeholder="Enter State">
-                <input type="text" name="country" [(ngModel)]="roledata.country" placeholder="Enter Country">
-                <input type="text" name="landmark" [(ngModel)]="roledata.landmark" placeholder="Enter Landmark">
-
-            </div>
-
-            <div class="sellerdata" *ngIf="selectedRole === 'Seller' ">
-
-                <input type="text" name="storename" [(ngModel)]="roledata.storename" placeholder="Enter Store Name">
-                <input type="number" name="totalproductsold" [(ngModel)]="roledata.totalproductsold" placeholder="Enter Total Products Sold">
-            
-            </div>
-
-            <button type="submit">Register</button>
-
-            <p (click)="isRegistered = !isRegistered">Already have an account? Login</p>
-
-        </form>
-
-    </div> -->
-
     <div class="homecontent">
-<!-- 
+
         <div class="searchbooks">
             <input type="text" placeholder="Search Books">
             <button>Search</button>
@@ -65,12 +12,14 @@
             <div *ngFor="let book of bookdata" class="books">
                 <img src="https://cdn.marvel.com/u/prod/marvel/images/OpenGraph-TW-1200x630.jpg" alt="Marvel">
                 <p>{{book.title.toUpperCase()}}</p>
+                <p>ONLY AT ${{book.price}}</p>
                 <a href="#">CHECK OUT NOW</a>
             </div>
 
-        </div> -->
-
-        <!-- <section>
+            
+        </div> 
+        
+        <section>
 
             <div class="banner">
                 <img src="https://as2.ftcdn.net/v2/jpg/04/32/32/87/1000_F_432328795_gyl6zdxtuKrwTDLSOgLF2NfnHNLkg1oC.jpg" alt="SellerPic">    
@@ -81,7 +30,7 @@
             </div>
 
             <div class="description">
-                <p>Hello [Seller's Name],</p>
+                <p>Hello Seller,</p>
                 <p>We're delighted to have you here at your Seller Dashboard. This is your central hub for managing and growing your online store. From monitoring your sales to updating your product catalog, you have the power to drive success.</p>
                 <p>Feel free to explore the various sections of your dashboard to gain valuable insights into your business performance. Whether you're a seasoned seller or just starting, we're here to support you on your journey.</p>
                 <p>If you have any questions or need assistance, our support team is just a click away. Happy selling!</p>
@@ -92,7 +41,7 @@
                 <h2>BOOKSTORE</h2>
             </div>
 
-        </section> -->
+        </section>
 
 </div>
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { login } from '../../../interfaces/datatype';
 import { AccountService } from '../../services/account/account.service';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -8,12 +9,6 @@ import { AccountService } from '../../services/account/account.service';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
-  selectedRole = "Buyer";
-  isRegistered = false
-
-  userdata: any = {};
-  roledata: any = {};
 
   bookdata = [
     {
@@ -97,26 +92,5 @@ export class HomeComponent {
       cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
     }
   ];
-
-  constructor(private accountservice : AccountService) { } 
-
-  register(){
-
-    this.userdata.role = this.selectedRole;
-
-    const data = {
-      userdata : this.userdata,
-      roledata : this.roledata
-    }
-    
-    this.accountservice.registerAPI(data);
-
-  }
-
-  logIn(data : login){
-    
-    this.accountservice.loginAPI(data);
-
-  }
 
 }
