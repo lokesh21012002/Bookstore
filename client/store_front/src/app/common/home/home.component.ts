@@ -90,6 +90,16 @@ export class HomeComponent implements OnInit{
       totalavailable : 10,
       genre : "Comic",
       cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
+    },
+    {
+      id : 9,
+      title : "Captain Marvel",
+      author : "Stan Lee",
+      price : 100,
+      totalsold : 1,
+      totalavailable : 10,
+      genre : "Comic",
+      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
     }
   ];
 

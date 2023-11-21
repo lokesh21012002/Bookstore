@@ -1,3 +1,28 @@
+.buyerhome{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbooks{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchbooks input{
+    width: 50%;
+    padding: 1rem;
+}
+
+.searchbooks button{
+    padding: 1rem;
+    width: 10%;
+}
+
 .bookscollection{
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -19,6 +44,10 @@
 .books img{
     width: 100%;
     height: 15rem;
+}
+
+.sellerhome{
+    height: 100%;
 }
 
 section{

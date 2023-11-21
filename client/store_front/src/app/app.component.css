@@ -4,12 +4,17 @@
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 4fr;
+  padding: .5rem;
 }
 
 .header {
   background: darkblue;
+  padding: 1rem;
+  overflow-y: scroll;
 }
 
 .dynamiccontent {
+  padding: 1rem;
   background: gray;
+  overflow-y: scroll;
 }
