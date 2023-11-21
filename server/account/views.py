@@ -56,7 +56,7 @@ class Register(APIView):
                 roleserializer.validated_data['user'] = user
                 roleserializer.save()
                 token = getToken(user)
-                return Response({'token' : token, 'status': 'ok', 'message' : 'User created successfully', 'userdata' : userserialize.data, 'roledata' : roleserializer.data}, status=status.HTTP_200_OK)
+                return Response({'token' : token, 'status': 'ok', 'message' : 'User created successfully', 'user' : userserialize.data}, status=status.HTTP_200_OK)
         
         return Response(userserialize.errors, status=status.HTTP_401_UNAUTHORIZED)
     
