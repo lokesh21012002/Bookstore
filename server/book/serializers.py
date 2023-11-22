@@ -11,7 +11,7 @@ class BookSerializer(serializers.ModelSerializer):
     seller = serializers.SerializerMethodField('get_user')
     class Meta:
         model = Book
-        fields = ['seller','title', 'author', 'price', 'totalsold', 'totalavailable', 'cover', 'genre']
+        fields = '__all__'
     def get_user(self, obj):
         return SerializeSeller(obj.seller).data
 

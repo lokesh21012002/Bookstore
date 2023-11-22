@@ -1,0 +1,51 @@
+.showbook{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    justify-content: center;
+    height: 100%;
+    align-content: center;
+    padding: 1rem;
+}
+
+.bookdetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.bookcover{
+    padding: 1rem;
+    background: white;
+}
+
+.bookcover img{
+    height: 100%;
+    width: 100%;
+}
+
+.bookdata{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 0.5rem;
+}
+
+.buyoptions{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.buyoptions button{
+    padding: 1.5rem;
+    width: 75%;
+}
+

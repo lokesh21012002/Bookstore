@@ -8,13 +8,17 @@ import { HomeComponent } from './common/home/home.component';
 import { UserauthComponent } from './userauth/userauth.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BookComponent } from './book/book.component';
+import { ShowbookComponent } from './book/showbook/showbook.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    UserauthComponent
+    UserauthComponent,
+    BookComponent,
+    ShowbookComponent
   ],
   imports: [
     BrowserModule,

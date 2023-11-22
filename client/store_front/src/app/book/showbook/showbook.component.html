@@ -1,0 +1,30 @@
+<div class="showbook">
+    
+    
+    <div class="bookcover">
+        <img src={{bookData.cover}} alt="Marvel">
+    </div>
+    
+    <div class="bookdetails">
+
+        <div class="bookdata">
+            
+            <h1>TITLE : {{bookData.title}}</h1>
+            <h3>AUTHOR : {{bookData.author}}</h3>
+            <h3>GENRE : {{bookData.genre}}</h3>
+            <h3>PRICE : ${{bookData.price}}</h3>
+            <h3>TOTAL SOLD : {{bookData.totalsold}}</h3>
+            <h3>TOTAL AVAILABLE : {{bookData.totalavailable}}</h3>
+            <h3>SOLD BY : {{bookData.seller.storename}}</h3>
+
+        </div>
+        
+        <div class="buyoptions">
+            <button (click)="checkOut()">REGISTER OR LOGIN TO BUY</button>
+        </div>
+        
+    </div>
+
+
+
+</div>
