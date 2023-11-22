@@ -18,7 +18,11 @@ const routes: Routes = [
     component : HomeComponent,
   },
   {
-    path : "Home/AddBook",
+    path : "Home/ChangeBook",
+    component : BookformComponent,
+  },
+  {
+    path : "Home/ChangeBook/:id",
     component : BookformComponent,
   },
   {

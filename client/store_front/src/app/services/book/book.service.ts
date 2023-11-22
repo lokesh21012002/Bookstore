@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { bookCreation } from '../../models/datatype';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -38,8 +37,8 @@ export class BookService {
 
   createBookApi(data : any){
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYwMzUwLCJpYXQiOjE3MDA2NTY3NTAsImp0aSI6IjAxYTVmYjAwZmEwZDQzYTQ4NjYwNDFiM2JjYjdjMGZlIiwidXNlcl9pZCI6Mn0.IXvRj4YrEsaKdB5Ozv_9LJ66DVCt6Ea-y4uu-74mMmA"
-    
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
+
     let formData = new FormData();
 
     formData.append('title', data.title);
@@ -59,17 +58,55 @@ export class BookService {
 
   getSellerBooksApi(){
     
-    const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYwMzUwLCJpYXQiOjE3MDA2NTY3NTAsImp0aSI6IjAxYTVmYjAwZmEwZDQzYTQ4NjYwNDFiM2JjYjdjMGZlIiwidXNlcl9pZCI6Mn0.IXvRj4YrEsaKdB5Ozv_9LJ66DVCt6Ea-y4uu-74mMmA";
-
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
     return this.http.get("http://localhost:8000/api/v1/book/bookapi/seller/", {headers : {
       'Authorization' : 'Bearer ' + token,
     }, 'observe' : 'response'});
 
   }
 
+  editBookApi(id : number, data : any){
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
+    const url = "http://localhost:8000/api/v1/book/bookapi/{id}".replace("{id}", id.toString());
+
+    let formData = new FormData();
+
+    if(data.title){
+      formData.append('title', data.title);
+    }
+    if(data.author){
+      formData.append('author', data.author);
+    }
+    if(data.price){
+      formData.append('price', data.price);
+    }
+    if(data.totalsold){
+      formData.append('totalsold', data.totalsold);
+    }
+    if(data.totalavailable){
+      formData.append('totalavailable', data.totalavailable);
+    }
+    if(data.genre){
+      formData.append('genre', data.genre);
+    }
+    if(data.cover){
+      formData.append('cover', data.cover);
+    }
+
+    console.warn("HELLo");
+    
+
+    this.http.put(url, formData, {headers : {
+      'Authorization' : 'Bearer ' + token,
+    }, 'observe' : 'response'}).subscribe((response) => {
+      this.router.navigate(['Home/MyBooks']);
+    })
+
+  }
+
   deleteBookApi(id : number){
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjU5Njg5LCJpYXQiOjE3MDA2NTYwODksImp0aSI6ImE4MDQxMDNmY2NmYzRmMTJiNjUzZWY4OWQ5YjU5YmViIiwidXNlcl9pZCI6Mn0.5Dx6EVmllnlm9zVTg-MrymmCCyhBdgqxJHclEYixzIs";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
 
     const url = "http://localhost:8000/api/v1/book/bookapi/{id}".replace("{id}", id.toString());
 

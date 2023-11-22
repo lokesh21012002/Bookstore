@@ -36,8 +36,6 @@ nav{
 
 }
 
-
-
 .roledash{
     display: flex;
     flex-direction: column;
@@ -49,4 +47,16 @@ nav{
 .roledash a{
     text-decoration: none;
     font-size: larger;
+}
+
+.profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.profile img{
+    height: 2.5rem;
 }

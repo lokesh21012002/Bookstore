@@ -9,7 +9,7 @@
         <p>${{myBooksData.price}}</p>
         
         <div class="actions">
-            <button>EDIT</button>
+            <button routerLink="/Home/ChangeBook/{{myBooksData.id}}">EDIT</button>
             <button (click)="deleteBook(myBooksData.id)">DELETE</button>
         </div>
 

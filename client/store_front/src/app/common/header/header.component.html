@@ -28,8 +28,9 @@
     
             <div *ngIf="isLoggedIn && loginData && loginData.role === 'Buyer'" class="roledash">
     
+                <h3>HELLO, {{loginData.name.split(' ')[0].toUpperCase()}}!</h3>
+
                 <a routerLink="/Home">Home</a>
-                <a href="#">Profile</a>
                 <a href="#">Your Orders</a>
                 <a href="#">Cart</a>
                 <a href="#">About</a>
@@ -39,9 +40,11 @@
     
             <div *ngIf="isLoggedIn && loginData && loginData.role === 'Seller'" class="roledash">
     
+                <h3>HELLO, {{loginData.name.split(' ')[0].toUpperCase()}}!</h3>
+
                 <a routerLink="/Home">Home</a>
                 <a href="#">Profile</a>
-                <a routerLink="/Home/AddBook">Add Books</a>
+                <a routerLink="/Home/ChangeBook">Add Books</a>
                 <a routerLink="/Home/MyBooks">Your Items</a>
                 <a href="#">About</a>
                 <a (click)="logout()" routerLink="/">Logout</a>
