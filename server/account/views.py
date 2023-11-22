@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from book.models import Invoice
 from book.serializers import BookSerializer, InvoiceSerializer
-from .serializers import OrderSerializer, UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
+from .serializers import OrderSerializer, SerializeOrder, UserRegistrationSerializer, UserLoginSerializer, BuyerSerializer, SellerSerializer
 from .models import Order, User, Buyer, Seller, Book
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
@@ -142,7 +142,7 @@ class OrderView(APIView):
         user = request.user
         buyer = Buyer.objects.get(user=user)
         orders = Order.objects.filter(buyer=buyer)
-        serializer = OrderSerializer(orders, many=True)
+        serializer = SerializeOrder(orders, many=True)
         return Response({'status': 'ok', 'message' : 'Orders fetched successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
         
     def post(self, request):

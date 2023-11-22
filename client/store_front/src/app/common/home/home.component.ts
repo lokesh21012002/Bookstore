@@ -1,5 +1,7 @@
+import { BookService } from './../../services/book/book.service';
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../services/account/account.service';
+import { OrderService } from '../../services/order/order.service';
 
 @Component({
   selector: 'app-home',
@@ -8,109 +10,48 @@ import { AccountService } from '../../services/account/account.service';
 })
 export class HomeComponent implements OnInit{
 
+  isPurchasing: boolean = false;
+  purchasingBookId: any = "";
+  sellerId: any = "";
+
   loginData: any = {};
+  purchasingData: any = {};
 
-  bookdata = [
-    {
-      id : 1,
-      title : "Marvel",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"  
-    },
-    {
-      id : 2,
-      title : "Hulk",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 3,
-      title : "Thor",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 4,
-      title : "Captain America",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 5,
-      title : "Iron Man",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 6,
-      title : "Black Panther",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 7,
-      title : "Spider Man",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 8,
-      title : "Ant Man",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    },
-    {
-      id : 9,
-      title : "Captain Marvel",
-      author : "Stan Lee",
-      price : 100,
-      totalsold : 1,
-      totalavailable : 10,
-      genre : "Comic",
-      cover : "https://upload.wikimedia.org/wikipedia/en/0/0e/Marvel_Logo.svg"
-    }
-  ];
+  bookData: any = [];
+  purchasingBook: any = {};
 
-  constructor(private accountservice : AccountService) { }
+  constructor(private accountservice : AccountService, private bookservice : BookService, private orderservice : OrderService) { }
 
   ngOnInit(): void {
 
     this.accountservice.loginData$.subscribe((data) => {
       this.loginData = data;
+      console.warn(data);
+      
+    })
+
+    this.bookservice.getAllBooksApi();
+
+    this.bookservice.bookData$.subscribe((data) => {
+      this.bookData = data;
     })
     
+  }
+
+  createOrder(data: any){
+    data.book = this.purchasingBookId;
+    data.seller = this.sellerId;
+    this.orderservice.createOrderApi(data);
+    this.isPurchasing = false;
+    this.purchasingBookId = "";
+    this.sellerId = "";
+  }
+
+  initPurchase(bookid: any, sellerid: any, purchasingBook: any){
+    this.isPurchasing = true;
+    this.purchasingBookId = bookid;
+    this.sellerId = sellerid;
+    this.purchasingBook = purchasingBook;
   }
 
 }

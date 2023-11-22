@@ -44,19 +44,16 @@ class UserLoginSerializer(serializers.ModelSerializer):
     model = User
     fields = ['email', 'password']
 
+class SerializeOrder(serializers.ModelSerializer):
+  seller = SerializeSeller()
+  book = BookSerializer()
+  buyer = BuyerSerializer()
+
+  class Meta:
+    model = Order
+    fields = '__all__'
+
 class OrderSerializer(serializers.ModelSerializer):
-  seller = serializers.SerializerMethodField('get_seller')
-  buyer = serializers.SerializerMethodField('get_buyer')
-  book = serializers.SerializerMethodField('get_book')
   class Meta:
     model = Order
     fields = ['buyer', 'seller', 'book', 'address','quantity', 'totalamount']
-
-  def get_seller(self, obj):
-        return SerializeSeller(obj.seller).data
-  
-  def get_buyer(self, obj):
-        return BuyerSerializer(obj.buyer).data
-  
-  def get_book(self, obj):
-        return BookSerializer(obj.book).data
