@@ -1,0 +1,18 @@
+<div class="mybooks">
+    
+    <div class="books" *ngFor="let myBooksData of myBooksData">
+        <div class="cover">
+            <img src={{myBooksData?.cover}} alt="Book">
+        </div>
+        <p>{{myBooksData.title}}</p>
+        <p>BY - {{myBooksData.author}}</p>
+        <p>${{myBooksData.price}}</p>
+        
+        <div class="actions">
+            <button>EDIT</button>
+            <button (click)="deleteBook(myBooksData.id)">DELETE</button>
+        </div>
+
+    </div>
+
+</div>

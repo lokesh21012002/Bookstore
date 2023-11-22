@@ -5,16 +5,16 @@
       <H1>UPDATE</H1>
     </div>
 
-    <div class="form">
+    <div class="form" encType="multipart/form-data">
       
-      <form method="POST">
-        <input type="text" placeholder="Enter Title">
-        <input type="text" placeholder="Enter Author">
-        <input type="number" placeholder="Enter Price">
-        <input type="number" placeholder="Enter Total Sold">
-        <input type="number" placeholder="Enter Total Available">
-        <input type="text" placeholder="Enter Genre">
-        <input type="file" placeholder="Upload Cover">
+      <form method="POST" #bookform="ngForm" (ngSubmit)="createBook(bookform.value)">
+        <input type="text" name="title" ngModel placeholder="Enter Title">
+        <input type="text" name="author" ngModel placeholder="Enter Author">
+        <input type="number" name="price" ngModel placeholder="Enter Price">
+        <input type="number" name="totalsold" ngModel placeholder="Enter Total Sold">
+        <input type="number" name="totalavailable" ngModel placeholder="Enter Total Available">
+        <input type="text" name="genre" ngModel placeholder="Enter Genre">
+        <input type="file" name="cover" (change)="onFileSelected($event)" ngModel placeholder="Upload Cover">
         <button type="submit">Submit</button>
       </form>
     

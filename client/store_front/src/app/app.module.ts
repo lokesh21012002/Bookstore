@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BookComponent } from './book/book.component';
 import { ShowbookComponent } from './book/showbook/showbook.component';
 import { BookformComponent } from './book/bookform/bookform.component';
+import { MybooksComponent } from './common/home/mybooks/mybooks.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { BookformComponent } from './book/bookform/bookform.component';
     UserauthComponent,
     BookComponent,
     ShowbookComponent,
-    BookformComponent
+    BookformComponent,
+    MybooksComponent
   ],
   imports: [
     BrowserModule,

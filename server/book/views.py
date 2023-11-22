@@ -23,7 +23,7 @@ class BookView(APIView):
         seller = Seller.objects.get(user=user)
         if user.role == 'Buyer':
             return Response({'status': 'error', 'message' : 'Buyer cannot create book'}, status=status.HTTP_400_BAD_REQUEST)
-        jsondata = request.data
+        jsondata = request.data.copy()
         jsondata['seller'] = seller.pk
         serialize = BookSerializer(data=jsondata)
         if serialize.is_valid():
