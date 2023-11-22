@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BookComponent } from './book/book.component';
 import { ShowbookComponent } from './book/showbook/showbook.component';
+import { BookformComponent } from './book/bookform/bookform.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ShowbookComponent } from './book/showbook/showbook.component';
     HomeComponent,
     UserauthComponent,
     BookComponent,
-    ShowbookComponent
+    ShowbookComponent,
+    BookformComponent
   ],
   imports: [
     BrowserModule,
