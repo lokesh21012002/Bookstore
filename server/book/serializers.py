@@ -7,14 +7,18 @@ class SerializeSeller(serializers.ModelSerializer):
     model = Seller
     fields = '__all__'
 
+class SerializeBook(serializers.ModelSerializer):
+  seller = serializers.SerializerMethodField('get_user')
+  class Meta:
+    model = Book
+    fields = '__all__'
+  def get_user(self, obj):
+    return SerializeSeller(obj.seller).data
+
 class BookSerializer(serializers.ModelSerializer):
-    seller = serializers.SerializerMethodField('get_user')
     class Meta:
         model = Book
         fields = '__all__'
-    def get_user(self, obj):
-        return SerializeSeller(obj.seller).data
-
 
 class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:

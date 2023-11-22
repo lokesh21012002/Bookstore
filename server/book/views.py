@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from account.models import Seller
 from account.serializers import SellerSerializer
-from .serializers import BookSerializer
+from .serializers import BookSerializer, SerializeBook
 from rest_framework.views import APIView
 from .models import Book
 from django.db.models import Q
@@ -72,12 +72,12 @@ class BookView(APIView):
             book = Book.objects.get(pk=pk)
             seller = Seller.objects.get(pk=book.seller.pk)
             
-            serializer = BookSerializer(book)
+            serializer = SerializeBook(book)
 
             return Response({'status': 'ok', 'message': 'Book fetched successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
         else:
             books = Book.objects.filter(filter_conditions)
-            serializer = BookSerializer(books, many=True)
+            serializer = SerializeBook(books, many=True)
             return Response({'status': 'ok', 'message': 'Books fetched successfully', 'data': serializer.data}, status=status.HTTP_200_OK)   
     
 class BookSeller(APIView):
