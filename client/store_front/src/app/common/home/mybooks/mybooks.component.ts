@@ -25,22 +25,29 @@ export class MybooksComponent implements OnInit{
     this.accountservice.tokenData$.subscribe((data) => {
       this.token = data;
     })
-
-    this.bookserice.getSellerBooksApi(this.token).subscribe((response) => {
-      const jsondata: any = response.body;
-      this.myBooksData = jsondata.data.data.books;
-      console.warn(this.myBooksData);
-    })
-
-    this.orderservice.getOrdersApi(this.token).subscribe((response) => {
-      const jsondata: any = response.body;
-      this.orderDetails = jsondata.data;
-      console.warn(this.orderDetails);
-    })
-
+    
     this.accountservice.loginData$.subscribe((data) => {
       this.loginData = data;
     })
+
+    if(this.loginData.role==="Seller")
+    {
+      this.bookserice.getSellerBooksApi(this.token).subscribe((response) => {
+        const jsondata: any = response.body;
+        this.myBooksData = jsondata.data.data.books;
+        console.warn(this.myBooksData);
+      })
+    }
+
+    if(this.loginData.role==="Buyer")
+    {      
+      this.orderservice.getOrdersApi(this.token).subscribe((response) => {
+        const jsondata: any = response.body;
+        this.orderDetails = jsondata.data;
+        console.warn(this.orderDetails);
+      })
+    }
+
 
   }
 

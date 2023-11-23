@@ -15,12 +15,13 @@
             <h3>PRICE : ${{bookData.price}}</h3>
             <h3>TOTAL SOLD : {{bookData.totalsold}}</h3>
             <h3>TOTAL AVAILABLE : {{bookData.totalavailable}}</h3>
-            <h3>SOLD BY : {{bookData.seller.storename}}</h3>
+            <h3>SOLD BY : {{bookData.seller?.storename}}</h3>
 
         </div>
         
         <div class="buyoptions">
-            <button (click)="checkOut()">REGISTER OR LOGIN TO BUY</button>
+            <button *ngIf="!isLoggedIn" (click)="checkOut()">REGISTER OR LOGIN TO BUY</button>
+            <button *ngIf="isLoggedIn">ADD TO CART</button>
         </div>
         
     </div>

@@ -41,13 +41,13 @@
     grid-template-columns: 1fr 1fr;
 }
 
-.orderdescription{
+.showorders{
     margin-top: 2rem;
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
     row-gap: 1rem;
-    column-gap: .5rem;
+    column-gap: 0.5rem;
 }
 
 .productdetails{

@@ -50,7 +50,15 @@ export class BookService {
     this.http.post("http://localhost:8000/api/v1/book/bookapi/", formData, {observe : 'response', headers : {
       'Authorization' : 'Bearer ' + token,
     }}).subscribe((response) => {
-      console.warn(response);
+
+      const httpresponse = response;
+
+      if(httpresponse.status !== 201) {
+        return;
+      }
+
+      this.router.navigate(['Home/MyBooks']);
+
     })
   }
 

@@ -31,6 +31,7 @@
       />
       <p>{{ book.title.toUpperCase() }}</p>
       <p>ONLY AT ${{ book.price }}</p>
+      <a routerLink="/Home/Book/{{book.id}}">READ MORE</a>
       <button (click)="initPurchase(book.id, book.seller.id, book)">PURCHASE</button>
     </div>
   </div>

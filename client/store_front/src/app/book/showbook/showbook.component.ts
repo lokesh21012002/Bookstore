@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AccountService } from '../../services/account/account.service';
 
 @Component({
   selector: 'app-showbook',
@@ -10,8 +11,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ShowbookComponent implements OnInit{
 
   bookData: any = {};
+  isLoggedIn: boolean = false;
 
-  constructor(private bookservice : BookService, private route : ActivatedRoute, private router : Router) {}
+  constructor(private bookservice : BookService, private route : ActivatedRoute, private router : Router, private accountservice : AccountService) {}
 
   ngOnInit(): void {
 
@@ -26,6 +28,10 @@ export class ShowbookComponent implements OnInit{
           this.bookData = data;
         }
       })
+    })
+
+    this.accountservice.isUserLoggedIn$.subscribe((data) => {
+      this.isLoggedIn = data
     })
 
   }

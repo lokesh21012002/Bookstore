@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserauthComponent } from './userauth/userauth.component';
 import { HomeComponent } from './common/home/home.component';
-import { userauthGuard } from './guard/userauth.guard';
 import { BookComponent } from './book/book.component';
 import { ShowbookComponent } from './book/showbook/showbook.component';
 import { BookformComponent } from './book/bookform/bookform.component';
 import { MybooksComponent } from './common/home/mybooks/mybooks.component';
+import { UserauthComponent } from './userauth/userauth.component';
+import { userauthGuard } from './guard/userguard/userauth.guard';
 
 const routes: Routes = [
   {
@@ -16,18 +16,27 @@ const routes: Routes = [
   {
     path : "Home",
     component : HomeComponent,
+    canActivate : [userauthGuard],
   },
   {
     path : "Home/ChangeBook",
     component : BookformComponent,
+    canActivate : [userauthGuard],
   },
   {
     path : "Home/ChangeBook/:id",
     component : BookformComponent,
+    canActivate : [userauthGuard],
   },
   {
     path : "Home/MyBooks",
     component : MybooksComponent,
+    canActivate : [userauthGuard],
+  },
+  {
+    path : "Home/Book/:id",
+    component : ShowbookComponent,
+    canActivate : [userauthGuard],
   },
   {
     path : "Book",
