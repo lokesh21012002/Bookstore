@@ -10,18 +10,13 @@ import { OrderService } from '../../services/order/order.service';
 })
 export class HomeComponent implements OnInit{
 
-  isPurchasing: boolean = false;
-  purchasingBookId: any = "";
-  sellerId: any = "";
   token: any = "";
 
   loginData: any = {};
-  purchasingData: any = {};
 
   bookData: any = [];
-  purchasingBook: any = {};
 
-  constructor(private accountservice : AccountService, private bookservice : BookService, private orderservice : OrderService) { }
+  constructor(private accountservice : AccountService, private bookservice : BookService) { }
 
   ngOnInit(): void {
 
@@ -31,8 +26,6 @@ export class HomeComponent implements OnInit{
 
     this.accountservice.loginData$.subscribe((data) => {
       this.loginData = data;
-      console.warn(data);
-      
     })
 
     this.bookservice.getAllBooksApi();
@@ -41,22 +34,6 @@ export class HomeComponent implements OnInit{
       this.bookData = data;
     })
     
-  }
-
-  createOrder(data: any){
-    data.book = this.purchasingBookId;
-    data.seller = this.sellerId;
-    this.orderservice.createOrderApi(data, this.token);
-    this.isPurchasing = false;
-    this.purchasingBookId = "";
-    this.sellerId = "";
-  }
-
-  initPurchase(bookid: any, sellerid: any, purchasingBook: any){
-    this.isPurchasing = true;
-    this.purchasingBookId = bookid;
-    this.sellerId = sellerid;
-    this.purchasingBook = purchasingBook;
   }
 
 }

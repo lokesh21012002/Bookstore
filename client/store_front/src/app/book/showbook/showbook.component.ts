@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../services/account/account.service';
+import { CartService } from '../../services/cart/cart.service';
 
 @Component({
   selector: 'app-showbook',
@@ -13,7 +14,7 @@ export class ShowbookComponent implements OnInit{
   bookData: any = {};
   isLoggedIn: boolean = false;
 
-  constructor(private bookservice : BookService, private route : ActivatedRoute, private router : Router, private accountservice : AccountService) {}
+  constructor(private bookservice : BookService, private route : ActivatedRoute, private router : Router, private cartservice : CartService) {}
 
   ngOnInit(): void {
 
@@ -30,10 +31,10 @@ export class ShowbookComponent implements OnInit{
       })
     })
 
-    this.accountservice.isUserLoggedIn$.subscribe((data) => {
-      this.isLoggedIn = data
-    })
+  }
 
+  addToCart(data: any){
+    this.cartservice.addToCart(data);
   }
 
   checkOut(){

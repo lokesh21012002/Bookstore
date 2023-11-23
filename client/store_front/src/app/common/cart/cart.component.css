@@ -1,0 +1,39 @@
+.purchasingorder{
+    background: darkgray;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.heading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.purchasingorder form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+}
+
+.purchasingorder textarea{
+    padding: 1rem;
+}
+
+.purchasingorder input{
+    padding: 1rem;
+    width: 34%;
+}
+
+.purchasingorder button{
+    padding: 1rem;
+    width: 25%;
+}

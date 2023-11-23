@@ -12,6 +12,7 @@ import { BookComponent } from './book/book.component';
 import { ShowbookComponent } from './book/showbook/showbook.component';
 import { BookformComponent } from './book/bookform/bookform.component';
 import { MybooksComponent } from './common/home/mybooks/mybooks.component';
+import { CartComponent } from './common/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MybooksComponent } from './common/home/mybooks/mybooks.component';
     BookComponent,
     ShowbookComponent,
     BookformComponent,
-    MybooksComponent
+    MybooksComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

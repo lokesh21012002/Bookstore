@@ -7,11 +7,16 @@ import { BookformComponent } from './book/bookform/bookform.component';
 import { MybooksComponent } from './common/home/mybooks/mybooks.component';
 import { UserauthComponent } from './userauth/userauth.component';
 import { userauthGuard } from './guard/userguard/userauth.guard';
+import { CartComponent } from './common/cart/cart.component';
 
 const routes: Routes = [
   {
     path : "",
-    component : UserauthComponent
+    component : UserauthComponent,
+  },
+  {
+    path : "Cart",
+    component : CartComponent,
   },
   {
     path : "Home",
@@ -36,6 +41,11 @@ const routes: Routes = [
   {
     path : "Home/Book/:id",
     component : ShowbookComponent,
+    canActivate : [userauthGuard],
+  },
+  {
+    path : "Home/Cart",
+    component : CartComponent,
     canActivate : [userauthGuard],
   },
   {

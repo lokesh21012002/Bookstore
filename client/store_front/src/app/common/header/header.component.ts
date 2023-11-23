@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../../services/account/account.service';
 import { OnInit } from '@angular/core';
+import { CartService } from '../../services/cart/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -12,9 +13,13 @@ export class HeaderComponent implements OnInit {
   loginData: any = {};
   isLoggedIn = false;
 
-  constructor(private accountservice : AccountService) { }
+  cartItems: any = [];
+
+  constructor(private accountservice : AccountService, private cartservice : CartService) { }
 
   ngOnInit(): void {
+
+    this.cartItems = this.cartservice.getCartItems();
     
     this.accountservice.loginData$.subscribe((data) => {
       this.loginData = data;
