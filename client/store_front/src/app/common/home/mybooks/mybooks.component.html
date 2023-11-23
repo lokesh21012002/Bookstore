@@ -1,4 +1,4 @@
-<div class="mybooks">
+<!-- <div class="mybooks">
     
     <div class="books" *ngFor="let myBooksData of myBooksData">
         <div class="cover">
@@ -13,6 +13,59 @@
             <button (click)="deleteBook(myBooksData.id)">DELETE</button>
         </div>
 
+    </div>
+
+</div> -->
+
+<div *ngIf="updateOrder" class="purchasingorder">
+    <form method="POST" #purchasingorder="ngForm" (ngSubmit)="editOrder(purchasingorder.value)">
+      <div class="heading">
+        <h1>EDIT ORDER DETAILS</h1>
+        <h3>PURCHASING BOOK : {{selectedOrderData.book.title}}</h3>
+        <h3>FOR : ${{selectedOrderData.book.price}}</h3>
+      </div>
+      <textarea
+        name="address"
+        rows="10"
+        cols="50"
+        [(ngModel)] = "selectedOrderData.address"
+        placeholder="Enter Your Address"
+      ></textarea>
+      <input type="number" name="quantity" [(ngModel)]="selectedOrderData.quantity" placeholder="Total Book Quantity" />
+      <button type="submit">EDIT ORDER</button>
+    </form>
+  </div>
+
+
+<h1>YOUR ORDERS</h1>
+
+<div *ngFor="let orderData of orderDetails" class="orderdescription">
+
+    <div class="product">
+        <div class="productdetails">
+            <h3>PRODUCT DETAILS</h3>
+            <div class="productimage">
+                <img src={{orderData?.book.cover}} alt="Cover">
+            </div>
+            <p>TITLE : {{orderData?.book.title}}</p>
+            <p>AUTHOR : {{orderData?.book.author}}</p>
+            <p>PRICE : ${{orderData?.book.price}}</p>
+            <div class="actions">
+                <button (click)="initiateEditOrder(orderData)">EDIT ORDER</button>
+                <button (click)="deleteOrder(orderData.id)">DELETE ORDER</button>
+            </div>
+        </div>
+        
+        <div class="orderdetails">
+            <h3>ORDER DETAILS</h3>
+            <p>ADDRESS : {{orderData?.address}}</p>
+            <p>QUANTITY : {{orderData?.quantity}}</p>
+            <p>TOTAL : ${{orderData?.totalamount}}</p>
+            <p>SOLD BY : {{orderData?.seller.storename}}</p>
+            <div class="actions">
+                <button (click)="getInvoice(orderData?.id)">VIEW BILL</button>
+            </div>
+        </div>
     </div>
 
 </div>

@@ -265,7 +265,7 @@ class GenerateBill(APIView):
                 ["Quantity", str(orderdata.quantity)],
                 ["Price", str(orderdata.book.price)],
                 ["Address", str(orderdata.address)],
-                ["Status", "Delivered"],
+                ["Status", "Dispatched"],
             ]
 
             # Create the table

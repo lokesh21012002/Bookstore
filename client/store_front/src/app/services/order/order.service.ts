@@ -11,7 +11,7 @@ export class OrderService {
 
   createOrderApi(data : any){
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjgyNDcyLCJpYXQiOjE3MDA2Nzg4NzIsImp0aSI6IjZlMjU2YzQ4YmFmYzQ1N2FiZmQ3MWU4ZjQ1OWYwOGNlIiwidXNlcl9pZCI6M30.HxvVuzUg5CdiBj8rDy3hCydkVvxs54KTLVruJLdDIP8";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
 
     this.http.post("http://localhost:8000/api/v1/account/order/", data, {observe : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
 
@@ -24,6 +24,60 @@ export class OrderService {
       this.router.navigate(['Home/MyBooks']);
 
     })
+
+  }
+
+  getOrdersApi(){
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
+    const url = "http://localhost:8000/api/v1/account/order";
+
+    return this.http.get(url, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}});
+
+  }
+
+  updateOrderApi(data: any){
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
+    const url = "http://localhost:8000/api/v1/account/order/"
+
+    this.http.put(url, data, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
+      console.warn(response);
+    })
+
+  }
+
+  deleteOrderApi(){
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
+    const url = "http://localhost:8000/api/v1/account/order/"
+
+    this.http.delete(url, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
+      console.warn(response);
+    })
+
+  }
+
+  getInvoiceApi(id : number){
+   
+   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
+   const url = `http://localhost:8000/api/v1/account/bill/${id}/`;
+
+    this.http.get(url, {
+      headers: { 'Authorization': 'Bearer ' + token },
+      observe: 'response',
+      responseType: 'blob', 
+    }).subscribe(
+      (response) => {
+        const json: any = response;
+        const blob = new Blob([json.body], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url); 
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
 
   }
 
