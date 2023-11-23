@@ -35,9 +35,7 @@ export class BookService {
     return this.http.get(url, {'observe' : 'response'});
   }
 
-  createBookApi(data : any){
-
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
+  createBookApi(data : any, token: any){
 
     let formData = new FormData();
 
@@ -56,17 +54,16 @@ export class BookService {
     })
   }
 
-  getSellerBooksApi(){
+  getSellerBooksApi(token: any){
     
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
     return this.http.get("http://localhost:8000/api/v1/book/bookapi/seller/", {headers : {
       'Authorization' : 'Bearer ' + token,
     }, 'observe' : 'response'});
 
   }
 
-  editBookApi(id : number, data : any){
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
+  editBookApi(id : number, data : any, token : any){
+    
     const url = "http://localhost:8000/api/v1/book/bookapi/{id}".replace("{id}", id.toString());
 
     let formData = new FormData();
@@ -104,10 +101,8 @@ export class BookService {
 
   }
 
-  deleteBookApi(id : number){
-
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNjYzODE1LCJpYXQiOjE3MDA2NjAyMTUsImp0aSI6IjZhMWU3ODM5ZjAwNTQ4Y2I5MWU3MmNlMDkzZjY3YThlIiwidXNlcl9pZCI6Mn0.Ygu3obd56e24knEd7FvoPkUZDkqw7yGnKAl_ivC5tbw";
-
+  deleteBookApi(id : number, token: any){
+    
     const url = "http://localhost:8000/api/v1/book/bookapi/{id}".replace("{id}", id.toString());
 
     this.http.delete(url, {headers : {

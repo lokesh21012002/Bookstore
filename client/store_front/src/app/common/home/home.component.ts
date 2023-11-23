@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit{
   isPurchasing: boolean = false;
   purchasingBookId: any = "";
   sellerId: any = "";
+  token: any = "";
 
   loginData: any = {};
   purchasingData: any = {};
@@ -23,6 +24,10 @@ export class HomeComponent implements OnInit{
   constructor(private accountservice : AccountService, private bookservice : BookService, private orderservice : OrderService) { }
 
   ngOnInit(): void {
+
+    this.accountservice.tokenData$.subscribe((data) => {
+      this.token = data;
+    })
 
     this.accountservice.loginData$.subscribe((data) => {
       this.loginData = data;
@@ -41,7 +46,7 @@ export class HomeComponent implements OnInit{
   createOrder(data: any){
     data.book = this.purchasingBookId;
     data.seller = this.sellerId;
-    this.orderservice.createOrderApi(data);
+    this.orderservice.createOrderApi(data, this.token);
     this.isPurchasing = false;
     this.purchasingBookId = "";
     this.sellerId = "";

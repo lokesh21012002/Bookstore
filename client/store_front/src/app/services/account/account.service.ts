@@ -9,6 +9,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AccountService {
 
+  private tokenSubject = new BehaviorSubject<string>('');
+  public tokenData$ = this.tokenSubject.asObservable();
+
   private loginSubject = new BehaviorSubject<any>({});
   public loginData$ = this.loginSubject.asObservable();
 
@@ -49,7 +52,7 @@ export class AccountService {
 
       this.loginSubject.next(user);
       this.isUserLoggedInSubject.next(true);
-
+      this.tokenSubject.next(jsondata.token.access);
       this.router.navigate(['Home']);
 
     });
@@ -71,7 +74,8 @@ export class AccountService {
       
       this.loginSubject.next(user);
       this.isUserLoggedInSubject.next(true);
-      
+      this.tokenSubject.next(jsondata.token.access);
+
       this.router.navigate(['Home']);
     })
 
@@ -80,6 +84,7 @@ export class AccountService {
   logoutApi(){
     this.loginSubject.next({});
     this.isUserLoggedInSubject.next(false);
+    this.tokenSubject.next('');
   }
 
 }

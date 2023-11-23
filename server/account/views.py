@@ -223,12 +223,11 @@ class OrderView(APIView):
             return Response({'status': 'ok', 'message' : 'Order updated successfully', 'data' : serializer.data}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request):
+    def delete(self, request, pk):
         user = request.user
         if user.role == 'Seller':
             return Response({'status': 'error', 'message' : 'Seller cannot delete order'}, status=status.HTTP_400_BAD_REQUEST)
-        buyer = Buyer.objects.get(user=user)
-        order = Order.objects.get(pk=buyer.pk)
+        order = Order.objects.get(pk=pk)
         order.delete()
         return Response({'status': 'ok', 'message' : 'Order deleted successfully'}, status=status.HTTP_200_OK)
     

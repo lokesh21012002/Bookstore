@@ -1,3 +1,4 @@
+import { AccountService } from './../../services/account/account.service';
 import { Component } from '@angular/core';
 import { BookService } from '../../services/book/book.service';
 import { bookCreation } from '../../models/datatype';
@@ -10,13 +11,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BookformComponent {
 
+  token: any = {};
+
   files: any = {}
   bookData: any = {}
   id: any = ""
 
-  constructor(private bookservice : BookService, private route : ActivatedRoute) {}
+  constructor(private accountservice : AccountService, private bookservice : BookService, private route : ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.accountservice.tokenData$.subscribe((data) => {
+      this.token = data;
+    })
     this.route.params.subscribe((data) => {
       this.id = data['id'];
     })
@@ -30,7 +36,7 @@ export class BookformComponent {
 
   createBook(data: bookCreation){
     data.cover = this.files;
-    this.bookservice.createBookApi(data);
+    this.bookservice.createBookApi(data, this.token);
   }
 
   updateBook(updatedata: bookCreation){
@@ -59,7 +65,7 @@ export class BookformComponent {
       data['cover'] = this.files;
     }
     
-    this.bookservice.editBookApi(this.id, data);
+    this.bookservice.editBookApi(this.id, data, this.token);
 }
   
   onFileSelected(e: any){

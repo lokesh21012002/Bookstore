@@ -9,10 +9,8 @@ export class OrderService {
 
   constructor(private http : HttpClient, private router : Router) { }
 
-  createOrderApi(data : any){
-
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
-
+  createOrderApi(data : any, token : any){
+    
     this.http.post("http://localhost:8000/api/v1/account/order/", data, {observe : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
 
       const httpresponse = response;
@@ -27,18 +25,16 @@ export class OrderService {
 
   }
 
-  getOrdersApi(){
+  getOrdersApi(token: any){
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
     const url = "http://localhost:8000/api/v1/account/order";
 
     return this.http.get(url, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}});
 
   }
 
-  updateOrderApi(data: any){
+  updateOrderApi(data: any, token: any){
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
     const url = "http://localhost:8000/api/v1/account/order/"
 
     this.http.put(url, data, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
@@ -47,10 +43,9 @@ export class OrderService {
 
   }
 
-  deleteOrderApi(){
+  deleteOrderApi(id: number, token: any){
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
-    const url = "http://localhost:8000/api/v1/account/order/"
+    const url = `http://localhost:8000/api/v1/account/order/${id}/`;
 
     this.http.delete(url, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
       console.warn(response);
@@ -58,10 +53,9 @@ export class OrderService {
 
   }
 
-  getInvoiceApi(id : number){
+  getInvoiceApi(id : number, token: any){
    
-   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNzQ1MDEzLCJpYXQiOjE3MDA3NDE0MTMsImp0aSI6IjQ4NWM5ZjA2MzNmNTRhMmZiZjNjMzE1MTE4Y2ZiYjU4IiwidXNlcl9pZCI6M30.L3n8eemFMNLWg_pR8SHIk1NQxQDjwmqqrk_2e85AcOY";
-   const url = `http://localhost:8000/api/v1/account/bill/${id}/`;
+    const url = `http://localhost:8000/api/v1/account/bill/${id}/`;
 
     this.http.get(url, {
       headers: { 'Authorization': 'Bearer ' + token },
