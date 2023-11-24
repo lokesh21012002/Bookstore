@@ -10,6 +10,9 @@ export const userauthGuard: CanActivateFn = (route, state) => {
   accountService.isUserLoggedIn$.subscribe((data) => {
     isLoggedIn = data
   })
+  let token = localStorage.getItem('token');
+  if(token)
+    isLoggedIn = true
 
   if(!isLoggedIn){
     router.navigate(['']);

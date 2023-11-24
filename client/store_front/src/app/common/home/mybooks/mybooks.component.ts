@@ -30,6 +30,15 @@ export class MybooksComponent implements OnInit{
       this.loginData = data;
     })
 
+    let token = localStorage.getItem('token');
+    let loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+
+    if(token)
+      this.token = token
+
+    if(loginData)
+      this.loginData = loginData
+
     if(this.loginData.role==="Seller")
     {
       this.bookserice.getSellerBooksApi(this.token).subscribe((response) => {
@@ -57,7 +66,7 @@ export class MybooksComponent implements OnInit{
   }
 
   editOrder(data: any){
-    this.orderservice.updateOrderApi(data, this.token);
+    this.orderservice.updateOrderApi(data, this.token, this.selectedOrderData.id);
     this.updateOrder = false;
     this.selectedOrderData = {};
   }

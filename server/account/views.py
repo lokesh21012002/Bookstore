@@ -192,13 +192,12 @@ class OrderView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def put(self, request):
+    def put(self, request, pk):
         user = request.user
         jsondata = request.data
         if user.role == 'Seller':
             return Response({'status': 'error', 'message' : 'Seller cannot update order'}, status=status.HTTP_400_BAD_REQUEST)
-        buyer = Buyer.objects.get(user=user)
-        order = Order.objects.get(buyer=buyer)
+        order = Order.objects.get(pk=pk)
 
         if 'quantity' in jsondata:
            book = order.book

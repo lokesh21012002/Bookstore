@@ -30,6 +30,8 @@ export class BookService {
 
       this.allbookSubject.next(books);
 
+      localStorage.setItem('bookData', JSON.stringify(books));
+
     })
   }
 

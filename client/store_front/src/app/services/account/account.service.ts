@@ -53,6 +53,10 @@ export class AccountService {
       this.loginSubject.next(user);
       this.isUserLoggedInSubject.next(true);
       this.tokenSubject.next(jsondata.token.access);
+
+      localStorage.setItem('token', jsondata.token.access);
+      localStorage.setItem('loginData', JSON.stringify(user));
+
       this.router.navigate(['Home']);
 
     });
@@ -75,6 +79,9 @@ export class AccountService {
       this.loginSubject.next(user);
       this.isUserLoggedInSubject.next(true);
       this.tokenSubject.next(jsondata.token.access);
+      
+      localStorage.setItem('token', jsondata.token.access);
+      localStorage.setItem('loginData', JSON.stringify(user));
 
       this.router.navigate(['Home']);
     })
@@ -85,6 +92,7 @@ export class AccountService {
     this.loginSubject.next({});
     this.isUserLoggedInSubject.next(false);
     this.tokenSubject.next('');
+    localStorage.clear();
   }
 
 }

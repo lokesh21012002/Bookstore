@@ -18,22 +18,39 @@ export class HeaderComponent implements OnInit {
   constructor(private accountservice : AccountService, private cartservice : CartService) { }
 
   ngOnInit(): void {
-
+    
     this.cartItems = this.cartservice.getCartItems();
+
+    console.warn(this.cartItems);
+    
     
     this.accountservice.loginData$.subscribe((data) => {
-      this.loginData = data;
-    })
+        this.loginData = data;
+      })
 
     this.accountservice.isUserLoggedIn$.subscribe((data) => {
-      this.isLoggedIn = data;
-    })
+        this.isLoggedIn = data;
+      })
+
+    const token = localStorage.getItem('token');
+
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+
+    if(loginData){
+      this.loginData = loginData;
+    }
+    
+    if(token){
+      this.isLoggedIn = true;
+    }
 
   }
 
   logout(){
-    
+
     this.accountservice.logoutApi();
+    this.loginData = {};
+    this.isLoggedIn = false;
 
   }
 

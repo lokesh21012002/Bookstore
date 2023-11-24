@@ -16,10 +16,18 @@ export class CartService implements OnInit{
     this.accountservice.isUserLoggedIn$.subscribe((data) => {
       this.isLoggedIn = data;
     })
+    let token = localStorage.getItem('token');
+
+    if(token)
+      this.isLoggedIn = true;
+
   }
 
   addToCart(item: any) {
     this.cartItems.push(item);
+    
+    localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+
     if(!this.isLoggedIn)
       this.router.navigate(['Cart']);
     else
@@ -27,6 +35,10 @@ export class CartService implements OnInit{
   }
 
   getCartItems() {
+
+    if(this.cartItems.length === 0)
+      this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+
     return this.cartItems;
   }
 
@@ -34,13 +46,16 @@ export class CartService implements OnInit{
     const index = this.cartItems.indexOf(item);
     if (index > -1) {
       this.cartItems.splice(index, 1);
+      localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     }
     if(!this.isLoggedIn)
       this.router.navigate(['Book']);
+    this.router.navigate(['Home']);
   }
 
   clearCart() {
     this.cartItems = [];
+    localStorage.removeItem('cartItems');
   }
 
 }

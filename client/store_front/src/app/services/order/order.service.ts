@@ -33,9 +33,9 @@ export class OrderService {
 
   }
 
-  updateOrderApi(data: any, token: any){
+  updateOrderApi(data: any, token: any, id: number){
 
-    const url = "http://localhost:8000/api/v1/account/order/"
+    const url = `http://localhost:8000/api/v1/account/order/${id}/`
 
     this.http.put(url, data, {'observe' : 'response', headers : {'Authorization' : 'Bearer ' + token}}).subscribe((response) => {
       console.warn(response);

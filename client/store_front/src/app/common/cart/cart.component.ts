@@ -40,6 +40,18 @@ export class CartComponent implements OnInit{
     this.accountservice.loginData$.subscribe((data) => {
       this.loginData = data;  
     })
+
+    let token = localStorage.getItem('token');
+    let loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+
+    if(token)
+      this.isLoggedIn = true
+
+    if(token)
+      this.token = token
+
+    if(loginData)
+      this.loginData = loginData
     
   }
   createOrder(data: any){

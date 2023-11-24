@@ -31,11 +31,25 @@ export class HomeComponent implements OnInit{
       this.loginData = data;
     })
 
+    let token = localStorage.getItem('token');
+    let loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+
+    if(token)
+      this.token = token
+
+    if(loginData)
+      this.loginData = loginData
+
     this.bookservice.getAllBooksApi();
 
     this.bookservice.bookData$.subscribe((data) => {
       this.bookData = data;
     })
+
+    let bookData = JSON.parse(localStorage.getItem('bookData') || '{}');
+
+    if(bookData)
+      this.bookData = bookData
     
   }
 
