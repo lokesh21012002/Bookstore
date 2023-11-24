@@ -1,6 +1,7 @@
 <div class="bookhome">
+  <h1>{{searchQuery}}</h1>
     <div class="searchbooks">
-        <input type="text" placeholder="Search Books" />
+        <input type="text" placeholder="Search Books" [(ngModel)]="searchQuery" (ngModelChange)="search($event)" />
         <button>Search</button>
       </div>
       
