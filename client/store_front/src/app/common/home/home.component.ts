@@ -16,6 +16,9 @@ export class HomeComponent implements OnInit{
 
   bookData: any = [];
 
+  searchQuery: any = "";
+  searchedBooks: any = [];
+
   constructor(private accountservice : AccountService, private bookservice : BookService) { }
 
   ngOnInit(): void {
@@ -34,6 +37,13 @@ export class HomeComponent implements OnInit{
       this.bookData = data;
     })
     
+  }
+
+  search(value: any){
+    this.bookservice.getSearchBooksApi(value);
+    this.bookservice.searchbookData$.subscribe((data) => {
+      this.searchedBooks = data;
+    })
   }
 
 }

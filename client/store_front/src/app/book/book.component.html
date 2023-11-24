@@ -1,24 +1,23 @@
-<div *ngIf="searchQuery" class="searchdetails">
-  <h1>SEARCH RESULTS</h1>
-  <div class="bookscollection">
-    <div *ngFor="let book of searchedBooks" class="books">
-      <img
-        src={{book.cover}}
-        alt="Marvel"
-      />
-      <p>{{ book.title.toUpperCase() }}</p>
-      <p>ONLY AT ${{ book.price }}</p>
-      <a routerLink="/Book/{{book.id}}">CHECK OUT NOW</a>
-    </div>
-  </div>
-</div>
-
 <div class="bookhome">
     <div class="searchbooks">
-        <input type="text" placeholder="Search Books" [(ngModel)]="searchQuery" (ngModelChange)="search($event)" />
-        <button>Search</button>
+        <input type="text" placeholder="Search Books By Title, Author & Genre" [(ngModel)]="searchQuery" (ngModelChange)="search($event)" />
       </div>
-      
+    
+      <div *ngIf="searchQuery" class="searchdetails">
+        <h1>{{searchedBooks.length > 0 ? searchedBooks.length + ' RESULTS FOUND' : 'NO RESULTS FOUND'}}</h1>
+        <div class="bookscollection">
+          <div *ngFor="let book of searchedBooks" class="books">
+            <img
+              src={{book.cover}}
+              alt="Marvel"
+            />
+            <p>{{ book.title.toUpperCase() }}</p>
+            <p>ONLY AT ${{ book.price }}</p>
+            <a routerLink="/Book/{{book.id}}">CHECK OUT NOW</a>
+          </div>
+        </div>
+      </div>
+
       <div *ngIf="!searchQuery" class="bookscollection">
         <div *ngFor="let book of bookData" class="books">
           <img
