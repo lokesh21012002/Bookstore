@@ -9,6 +9,7 @@ import { BookService } from '../services/book/book.service';
 export class BookComponent implements OnInit{
   bookData: any = {};
   searchQuery: any = "";
+  searchedBooks: any = [];
 
   constructor(private bookservice : BookService) {}
 
@@ -20,7 +21,10 @@ export class BookComponent implements OnInit{
   }
 
   search(value: any){
-    console.warn(value);
+    this.bookservice.getSearchBooksApi(value);
+    this.bookservice.searchbookData$.subscribe((data) => {
+      this.searchedBooks = data;
+    })
   }
 
 }

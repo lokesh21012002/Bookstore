@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, concatMap, of } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -10,6 +10,9 @@ export class BookService {
 
   private allbookSubject = new BehaviorSubject<any>([])
   public bookData$ = this.allbookSubject.asObservable()
+
+  private searchbookSubject = new BehaviorSubject<any>([])
+  public searchbookData$ = this.searchbookSubject.asObservable()
 
   constructor(private http : HttpClient, private router : Router) { }
 
@@ -106,6 +109,62 @@ export class BookService {
     }, 'observe' : 'response'}).subscribe((response) => {
       this.router.navigate(['Home/MyBooks']);
     })
+
+  }
+
+  getSearchBooksApi(searchQuery : any){
+
+    const url1 = `http://localhost:8000/api/v1/book/bookapi/?genre=${searchQuery}`;
+    const url2 = `http://localhost:8000/api/v1/book/bookapi/?title=${searchQuery}`;
+    const url3 = `http://localhost:8000/api/v1/book/bookapi/?author=${searchQuery}`;
+
+    let flag = 0;
+
+    this.http.get(url1, {'observe' : 'response'}).subscribe((response) => {
+
+      const httpresponse: any = response;
+      if(httpresponse.status !== 200) {
+        return;
+      }
+      const jsondata: any = httpresponse.body;
+      this.searchbookSubject.next(jsondata.data)
+
+      if(jsondata.data.length > 0)
+        flag = 1
+
+    })
+
+    if(flag === 0){
+
+      this.http.get(url2, {'observe' : 'response'}).subscribe((response) => {
+
+        const httpresponse: any = response;
+        if(httpresponse.status !== 200) {
+          return;
+        }
+        const jsondata: any = httpresponse.body;
+        
+        this.searchbookSubject.next(jsondata.data)
+
+        if(jsondata.data.length > 0)
+          flag = 1
+
+    })}
+
+    if(flag === 0){
+
+      this.http.get(url3, {'observe' : 'response'}).subscribe((response) => {
+
+        const httpresponse: any = response;
+        if(httpresponse.status !== 200) {
+          return;
+        }
+        const jsondata: any = httpresponse.body;
+        this.searchbookSubject.next(jsondata.data)
+
+        if(jsondata.data.length > 0)
+          flag = 1
+    })}
 
   }
 
