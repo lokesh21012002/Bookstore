@@ -11,13 +11,21 @@ export class CartService{
   isLoggedIn: boolean = false;
   cartItems: any = [];
 
-  constructor(private router: Router, private toastr: ToastrService) { }
+  constructor(private router: Router, private toastr: ToastrService, private accountservice : AccountService) { }
 
   addToCart(item: any) {
     try {
       this.cartItems.push(item);
       localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
 
+      this.accountservice.isUserLoggedIn$.subscribe((data) => {
+        this.isLoggedIn = data;
+      })
+      let token = localStorage.getItem('token');
+  
+      if(token)
+        this.isLoggedIn = true;
+      
       if (!this.isLoggedIn)
         this.router.navigate(['Cart']);
       else
@@ -50,6 +58,14 @@ export class CartService{
         this.cartItems.splice(index, 1);
         localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
       }
+
+      this.accountservice.isUserLoggedIn$.subscribe((data) => {
+        this.isLoggedIn = data;
+      })
+      let token = localStorage.getItem('token');
+  
+      if(token)
+        this.isLoggedIn = true;
 
       if (!this.isLoggedIn)
         this.router.navigate(['/Book']);

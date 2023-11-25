@@ -52,12 +52,31 @@
 
 
 .purchasingorder{
-    background: darkgray;
+    border: 3px solid var(--secondarybg);
+    background: var(--primarybg);
     position: absolute;
     height: 100%;
     top: 0;
     left: 0;
     right: 0;
+}
+
+.purchasingorder textarea{
+    background: var(--secondarybg);
+}
+
+.purchasingorder textarea::placeholder{
+    color: white;
+}
+
+.purchasingorder input{
+    background: var(--secondarybg);
+    color: white;
+}
+
+.purchasingorder button{
+    background: var(--secondarybg);
+    color: white;
 }
 
 .heading{
