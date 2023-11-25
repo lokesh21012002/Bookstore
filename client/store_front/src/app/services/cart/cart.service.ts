@@ -48,9 +48,11 @@ export class CartService implements OnInit{
       this.cartItems.splice(index, 1);
       localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     }
+    
     if(!this.isLoggedIn)
-      this.router.navigate(['Book']);
-    this.router.navigate(['Home']);
+      this.router.navigate(['/Book']);
+    else
+      this.router.navigate(['Home']);
   }
 
   clearCart() {

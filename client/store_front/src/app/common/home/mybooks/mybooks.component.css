@@ -73,12 +73,31 @@
 }
 
 .purchasingorder{
-    background: darkgray;
     position: absolute;
+    background: var(--primarybg);
     height: 100%;
     top: 0;
     left: 0;
     right: 0;
+}
+
+.purchasingorder input{
+    background: var(--secondarybg);
+    color: white;
+}
+
+.purchasingorder textarea{
+    color: white;
+    background: var(--secondarybg);
+}
+
+.purchasingorder textarea::placeholder{
+    color: white;
+}
+
+.purchasingorder button{
+    padding: 2rem;
+    background-color: var(--secondarybg);
 }
 
 .heading{
