@@ -1,5 +1,9 @@
-<h1 *ngIf="loginData && loginData.role === 'Buyer'">YOUR ORDERS</h1>
-<h1 *ngIf="loginData && loginData.role === 'Seller'">YOUR BOOKS</h1>
+<div class="heading">
+    
+    <h1 *ngIf="loginData && loginData.role === 'Buyer'">YOUR ORDERS</h1>
+    <h1 *ngIf="loginData && loginData.role === 'Seller'">YOUR BOOKS</h1>
+
+</div>
 
 <div *ngIf="loginData && loginData.role === 'Seller'" class="mybooks">
     
