@@ -3,7 +3,7 @@
     <input type="text" placeholder="Search Books By Title, Author & Genre" [(ngModel)]="searchQuery" (ngModelChange)="search($event)" />
   </div>
 
-  <div *ngIf="searchQuery" class="searchdetails">
+  <div *ngIf="searchQuery" class="buyersearch">
     <h1>{{searchedBooks.length > 0 ? searchedBooks.length + ' RESULTS FOUND' : 'NO RESULTS FOUND'}}</h1>
     <div class="bookscollection">
       <div *ngFor="let book of searchedBooks" class="books">

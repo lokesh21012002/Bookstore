@@ -24,6 +24,14 @@
     width: 10%;
 }
 
+.searchdetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
 .bookscollection{
     display: grid;
     grid-template-rows: 1fr 1fr;
