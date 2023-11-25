@@ -19,83 +19,104 @@ export class AccountService {
   private isUserLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isUserLoggedIn$ = this.isUserLoggedInSubject.asObservable();
 
-  constructor(private http : HttpClient, private router : Router, private toastr : ToastrService) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
-  registerApi(data : any){
+  registerApi(data: any) {
+    const userdata = data.userdata;
+    const roledata = data.roledata;
 
-    const userdata = data.userdata
-    const roledata = data.roledata
-    
     if (!userdata.email || !userdata.name || !userdata.password || !userdata.password2) {
+      this.toastr.error('Please fill in all required fields', 'Error');
       return;
     }
 
-    if (userdata.role === "Buyer") {
+    if (userdata.role === 'Buyer') {
       if (!roledata.city || !roledata.state || !roledata.country || !roledata.landmark) {
+        this.toastr.error('Buyer details are incomplete', 'Error');
         return;
       }
-    } else if (userdata.role === "Seller") {
+    } else if (userdata.role === 'Seller') {
       if (!roledata.storename || !roledata.totalproductsold) {
+        this.toastr.error('Seller details are incomplete', 'Error');
         return;
       }
     }
 
-    this.http.post('http://localhost:8000/api/v1/account/register/', data, {observe : 'response'}).subscribe((response) => {
+    this.http.post('http://localhost:8000/api/v1/account/register/', data, { observe: 'response' }).subscribe(
+      (response) => {
+        const httpresponse: any = response;
 
-      const httpresponse = response;
+        if (httpresponse.status !== 200) {
+          this.toastr.error('Registration failed. Please try again.', 'Error');
+          return;
+        }
 
-      if(httpresponse.status !== 200) {
-        return;
+        const jsondata: any = httpresponse.body;
+        const user = jsondata.user;
+
+        this.loginSubject.next(user);
+        this.isUserLoggedInSubject.next(true);
+        this.tokenSubject.next(jsondata.token.access);
+
+        localStorage.setItem('token', jsondata.token.access);
+        localStorage.setItem('loginData', JSON.stringify(user));
+
+        this.toastr.success('Registration successful', 'Success');
+        this.router.navigate(['Home']);
+      },
+      (error) => {
+        this.toastr.error('An unexpected error occurred. Please try again later.', 'Error');
+        console.error(error);
       }
-
-      const jsondata: any = httpresponse.body;
-      const user = jsondata.user;
-
-      this.loginSubject.next(user);
-      this.isUserLoggedInSubject.next(true);
-      this.tokenSubject.next(jsondata.token.access);
-
-      localStorage.setItem('token', jsondata.token.access);
-      localStorage.setItem('loginData', JSON.stringify(user));
-
-      this.router.navigate(['Home']);
-
-    });
-
+    );
   }
+  loginApi(data: login) {
+    if (!data.email || !data.password) {
+      this.toastr.error('Please enter both email and password', 'Error');
+      return;
+    }
 
-  loginApi(data : login){
-    
-    this.http.post('http://localhost:8000/api/v1/account/login/', data, {observe : 'response'}).subscribe((response) => {
-      
-      const httpresponse = response;
+    this.http.post('http://localhost:8000/api/v1/account/login/', data, { observe: 'response' }).subscribe(
+      (response) => {
+        const httpresponse: any = response;
 
-      if(httpresponse.status !== 200) {
-        return;
+        if (httpresponse.status !== 200) {
+          this.toastr.error('Invalid email or password', 'Error');
+          return;
+        }
+
+        const jsondata: any = httpresponse.body;
+        const user = jsondata.user;
+
+        this.loginSubject.next(user);
+        this.isUserLoggedInSubject.next(true);
+        this.tokenSubject.next(jsondata.token.access);
+
+        localStorage.setItem('token', jsondata.token.access);
+        localStorage.setItem('loginData', JSON.stringify(user));
+
+        this.toastr.success('Login successful', 'Success');
+
+        this.router.navigate(['Home']);
+      },
+      (error) => {
+        this.toastr.error('An unexpected error occurred. Please try again later.', 'Error');
+        console.error(error);
       }
+    );
+}
 
-      const jsondata: any = httpresponse.body;
-      const user = jsondata.user;
-      
-      this.loginSubject.next(user);
-      this.isUserLoggedInSubject.next(true);
-      this.tokenSubject.next(jsondata.token.access);
-      
-      localStorage.setItem('token', jsondata.token.access);
-      localStorage.setItem('loginData', JSON.stringify(user));
 
-      this.toastr.success('Login Successful', 'Success');
-
-      this.router.navigate(['Home']);
-    })
-
-  }
-
-  logoutApi(){
+  logoutApi() {
     this.loginSubject.next({});
     this.isUserLoggedInSubject.next(false);
     this.tokenSubject.next('');
     localStorage.clear();
+    this.toastr.success('See you later', 'Success');
   }
 
 }
