@@ -13,6 +13,8 @@ import { ShowbookComponent } from './book/showbook/showbook.component';
 import { BookformComponent } from './book/bookform/bookform.component';
 import { MybooksComponent } from './common/home/mybooks/mybooks.component';
 import { CartComponent } from './common/cart/cart.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,10 @@ import { CartComponent } from './common/cart/cart.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

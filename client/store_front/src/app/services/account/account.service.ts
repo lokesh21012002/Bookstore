@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { login } from '../../models/datatype';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AccountService {
   private isUserLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isUserLoggedIn$ = this.isUserLoggedInSubject.asObservable();
 
-  constructor(private http : HttpClient, private router : Router) { }
+  constructor(private http : HttpClient, private router : Router, private toastr : ToastrService) { }
 
   registerApi(data : any){
 
@@ -82,6 +83,8 @@ export class AccountService {
       
       localStorage.setItem('token', jsondata.token.access);
       localStorage.setItem('loginData', JSON.stringify(user));
+
+      this.toastr.success('Login Successful', 'Success');
 
       this.router.navigate(['Home']);
     })
