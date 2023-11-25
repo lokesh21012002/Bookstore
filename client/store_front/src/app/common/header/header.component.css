@@ -28,14 +28,6 @@ nav{
     gap: 0.3em;
 }
 
-.logo{
-
-}
-
-.dashboard{
-
-}
-
 .roledash{
     display: flex;
     flex-direction: column;

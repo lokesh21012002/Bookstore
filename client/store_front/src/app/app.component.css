@@ -1,21 +1,21 @@
 .app {
-  background: black;
   height: 100vh;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 4fr;
+  column-gap: .5rem;
   padding: .5rem;
 }
 
 .header {
-  background: darkblue;
   padding: 1rem;
   overflow-y: scroll;
+  background: var(--secondarybg);
 }
 
 .dynamiccontent {
   position: relative;
   padding: 1rem;
-  background: gray;
   overflow-y: scroll;
+  background: var(--secondarybg);
 }

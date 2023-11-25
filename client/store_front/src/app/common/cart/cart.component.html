@@ -1,5 +1,3 @@
-<p>cart works!</p>
-
 <div *ngIf="loginData && loginData.role === 'Buyer' && isPurchasing" class="purchasingorder">
     <form method="POST" #purchasingorder="ngForm" (ngSubmit)="createOrder(purchasingorder.value)">
       <div class="heading">
@@ -20,16 +18,26 @@
   </div>
 
 
-<div class="cartitems">
-    <div *ngFor="let cartItem of cartItems" class="items">
-        <div class="cover">
-            <img src={{cartItem.cover}} alt="Book">
-        </div>
-        <p>{{cartItem.title}}</p>
-        <p>BY - {{cartItem.author}}</p>
-        <p>${{cartItem.price}}</p>
-        <button (click)="initPurchase(cartItem.id, cartItem.seller.id, cartItem)" *ngIf="isLoggedIn">PURCHASE</button>
-        <button (click)="deleteItem(cartItem)">DELETE</button>
-        <button routerLink="/" *ngIf="!isLoggedIn">REGISTER OR LOGIN TO BUY</button>
+<div class="cart">
+  
+    <div class="heading">
+        <h1>CART</h1>
     </div>
+    
+    <div class="cartitems">
+        <div *ngFor="let cartItem of cartItems" class="items">
+            <div class="cover">
+                <img src={{cartItem.cover}} alt="Book">
+            </div>
+            <h1>{{cartItem.title}}</h1>
+            <p>BY - {{cartItem.author}}</p>
+            <p>${{cartItem.price}}</p>
+            <div class="options">
+              <button (click)="initPurchase(cartItem.id, cartItem.seller.id, cartItem)" *ngIf="isLoggedIn">PURCHASE</button>
+              <button (click)="deleteItem(cartItem)">DELETE</button>
+              <button routerLink="/" *ngIf="!isLoggedIn">REGISTER OR LOGIN TO BUY</button>
+            </div>
+        </div>
+    </div>
+
 </div>

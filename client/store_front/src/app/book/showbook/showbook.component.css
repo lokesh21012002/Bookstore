@@ -1,11 +1,18 @@
+/* .showbookbox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: blue;
+}
+
 .showbook{
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 1rem;
-    justify-content: center;
-    height: 100%;
-    align-content: center;
-    padding: 1rem;
+    padding: .5rem;
+    height: 45rem;
 }
 
 .bookdetails{
@@ -18,7 +25,7 @@
 
 .bookcover{
     padding: 1rem;
-    background: white;
+    height: 75%;
 }
 
 .bookcover img{
@@ -29,10 +36,10 @@
 .bookdata{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     gap: 2rem;
     margin-top: 0.5rem;
+    height: 100%;
 }
 
 .buyoptions{
@@ -47,5 +54,52 @@
 .buyoptions button{
     padding: 1.5rem;
     width: 75%;
+} */
+
+
+.showbook{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
 }
 
+.heading{
+    width: 50%;
+    padding: 1rem;
+    text-align: center;
+    background: var(--primarybg);
+}
+
+.book{
+    display: flex;
+    gap: 1rem;
+    height: 70%;
+}
+
+.bookcover{
+    padding: 1rem;
+    width: 50%;
+    background-color: var(--primarybg);
+}
+
+.bookcover img{
+    height: 100%;
+    width: 100%;
+}
+
+.bookdetails{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid var(--primarybg);
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.buyoptions button{
+    padding: 1.5rem;
+}
