@@ -57,7 +57,7 @@
             <h3>PRICE : ${{bookData.price}}</h3>
             <h3>TOTAL SOLD : {{bookData.totalsold}}</h3>
             <h3>TOTAL AVAILABLE : {{bookData.totalavailable}}</h3>
-            <h3>SOLD BY : {{bookData.seller?.storename}}</h3>
+            <h3>SOLD BY : {{loginData && loginData.role === 'Seller' ? 'YOU' : bookData.seller?.storename}}</h3>
             
             <div class="buyoptions">
                 <button (click)="addToCart(bookData)">ADD TO CART</button>

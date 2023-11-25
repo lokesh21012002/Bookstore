@@ -11,10 +11,11 @@ import { CartService } from '../../services/cart/cart.service';
 })
 export class ShowbookComponent implements OnInit{
 
+  loginData: any = {};
   bookData: any = {};
   isLoggedIn: boolean = false;
 
-  constructor(private bookservice : BookService, private route : ActivatedRoute, private router : Router, private cartservice : CartService) {}
+  constructor(private accountservice : AccountService,private bookservice : BookService, private route : ActivatedRoute, private router : Router, private cartservice : CartService) {}
 
   ngOnInit(): void {
 
@@ -29,6 +30,10 @@ export class ShowbookComponent implements OnInit{
           this.bookData = data;
         }
       })
+    })
+
+    this.accountservice.loginData$.subscribe((data) => {
+      this.loginData = data;
     })
 
   }

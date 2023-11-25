@@ -48,3 +48,19 @@ button{
     cursor: pointer;
     border-radius: 2rem;
 }
+
+.nodata{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--primarybg);
+}
+
+.nodata img{
+    height: 100%;
+    width: 100%;
+}
