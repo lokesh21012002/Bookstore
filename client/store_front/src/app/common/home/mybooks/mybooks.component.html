@@ -1,65 +1,64 @@
 <div class="heading">
-    
+        
     <h1 *ngIf="loginData && loginData.role === 'Buyer'">YOUR ORDERS</h1>
     <h1 *ngIf="loginData && loginData.role === 'Seller'">YOUR BOOKS</h1>
 
 </div>
-
+    
 <div *ngIf="loginData && loginData.role === 'Seller'" class="mybooks">
-    
-    <div class="books" *ngFor="let myBooksData of myBooksData">
-        <div class="cover">
-            <img src={{myBooksData?.cover}} alt="Book">
-        </div>
-        <p>{{myBooksData.title}}</p>
-        <p>BY - {{myBooksData.author}}</p>
-        <p>${{myBooksData.price}}</p>
         
-        <div class="actions">
-            <button routerLink="/Home/ChangeBook/{{myBooksData.id}}">EDIT</button>
-            <button (click)="deleteBook(myBooksData.id)">DELETE</button>
+        <div class="books" *ngFor="let myBooksData of myBooksData">
+            <div class="cover">
+                <img src={{myBooksData?.cover}} alt="Book">
+            </div>
+            <p>{{myBooksData.title}}</p>
+            <p>BY - {{myBooksData.author}}</p>
+            <p>${{myBooksData.price}}</p>
+            
+            <div class="actions">
+                <button routerLink="/Home/ChangeBook/{{myBooksData.id}}">EDIT</button>
+                <button (click)="deleteBook(myBooksData.id)">DELETE</button>
+            </div>
+    
         </div>
-
+    
     </div>
-
-</div>
-
-
-<div *ngIf="loginData && loginData.role === 'Buyer'" class="showorders">
     
-    <div *ngFor="let orderData of orderDetails" class="orderdescription">
     
-        <div class="product">
-            <div class="productdetails">
-                <h3>PRODUCT DETAILS</h3>
-                <div class="productimage">
-                    <img src={{orderData?.book.cover}} alt="Cover">
+    <div *ngIf="loginData && loginData.role === 'Buyer'" class="showorders">
+        
+        <div *ngFor="let orderData of orderDetails" class="orderdescription">
+        
+            <div class="product">
+                <div class="productdetails">
+                    <h3>PRODUCT DETAILS</h3>
+                    <div class="productimage">
+                        <img src={{orderData?.book.cover}} alt="Cover">
+                    </div>
+                    <p>TITLE : {{orderData?.book.title}}</p>
+                    <p>AUTHOR : {{orderData?.book.author}}</p>
+                    <p>PRICE : ${{orderData?.book.price}}</p>
+                    <div class="actions">
+                        <button (click)="initiateEditOrder(orderData)">EDIT ORDER</button>
+                        <button (click)="deleteOrder(orderData.id)">DELETE ORDER</button>
+                    </div>
                 </div>
-                <p>TITLE : {{orderData?.book.title}}</p>
-                <p>AUTHOR : {{orderData?.book.author}}</p>
-                <p>PRICE : ${{orderData?.book.price}}</p>
-                <div class="actions">
-                    <button (click)="initiateEditOrder(orderData)">EDIT ORDER</button>
-                    <button (click)="deleteOrder(orderData.id)">DELETE ORDER</button>
+                
+                <div class="orderdetails">
+                    <h3>ORDER DETAILS</h3>
+                    <p>ADDRESS : {{orderData?.address}}</p>
+                    <p>QUANTITY : {{orderData?.quantity}}</p>
+                    <p>TOTAL : ${{orderData?.totalamount}}</p>
+                    <p>SOLD BY : {{orderData?.seller.storename}}</p>
+                    <div class="actions">
+                        <button (click)="getInvoice(orderData?.id)">VIEW BILL</button>
+                    </div>
                 </div>
             </div>
             
-            <div class="orderdetails">
-                <h3>ORDER DETAILS</h3>
-                <p>ADDRESS : {{orderData?.address}}</p>
-                <p>QUANTITY : {{orderData?.quantity}}</p>
-                <p>TOTAL : ${{orderData?.totalamount}}</p>
-                <p>SOLD BY : {{orderData?.seller.storename}}</p>
-                <div class="actions">
-                    <button (click)="getInvoice(orderData?.id)">VIEW BILL</button>
-                </div>
-            </div>
         </div>
-        
+    
     </div>
-
-</div>
-
 
 <div *ngIf="updateOrder" class="purchasingorder">
     <form method="POST" #purchasingorder="ngForm" (ngSubmit)="editOrder(purchasingorder.value)">
