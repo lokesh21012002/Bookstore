@@ -28,6 +28,10 @@ nav{
     gap: 0.3em;
 }
 
+.product img{
+    height: 12rem;
+}
+
 .roledash{
     display: flex;
     flex-direction: column;
