@@ -1,7 +1,9 @@
 <div class="authform">
             
-    <h1 *ngIf="!isRegistered">REGISTER</h1>
-    <h1 *ngIf="isRegistered">LOGIN</h1>
+    <div class="heading">
+        <h1 *ngIf="!isRegistered">REGISTER</h1>
+        <h1 *ngIf="isRegistered">LOGIN</h1>
+    </div>
     
     <form *ngIf="isRegistered" method="POST" #authform="ngForm" (ngSubmit)="login(authform.value)">
         <input type="email" name="email" ngModel placeholder="Enter Email">

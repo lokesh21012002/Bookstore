@@ -1,7 +1,3 @@
-.heading{
-    text-align: center;
-}
-
 .bookstorage{
     display: flex;
     flex-direction: column;
@@ -126,14 +122,6 @@
 .purchasingorder button{
     padding: 2rem;
     background-color: var(--secondarybg);
-}
-
-.heading{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
 }
 
 .purchasingorder form{
