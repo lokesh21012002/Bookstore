@@ -4,6 +4,7 @@ import { login } from '../../models/datatype';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from '../loader/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class AccountService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loaderservice : LoaderService
   ) {}
 
   registerApi(data: any) {
@@ -46,12 +48,15 @@ export class AccountService {
       }
     }
 
+    this.loaderservice.showLoader();
+
     this.http.post('http://localhost:8000/api/v1/account/register/', data, { observe: 'response' }).subscribe(
       (response) => {
         const httpresponse: any = response;
 
         if (httpresponse.status !== 200) {
           this.toastr.error('Registration failed. Please try again.', 'Error');
+          this.loaderservice.hideLoader();
           return;
         }
 
@@ -66,9 +71,11 @@ export class AccountService {
         localStorage.setItem('loginData', JSON.stringify(user));
 
         this.toastr.success('Registration successful', 'Success');
+        this.loaderservice.hideLoader();
         this.router.navigate(['Home']);
       },
       (error) => {
+        this.loaderservice.hideLoader();
         this.toastr.error('An unexpected error occurred. Please try again later.', 'Error');
         console.error(error);
       }
@@ -79,13 +86,14 @@ export class AccountService {
       this.toastr.error('Please enter both email and password', 'Error');
       return;
     }
-
+    this.loaderservice.showLoader();
     this.http.post('http://localhost:8000/api/v1/account/login/', data, { observe: 'response' }).subscribe(
       (response) => {
         const httpresponse: any = response;
 
         if (httpresponse.status !== 200) {
           this.toastr.error('Invalid email or password', 'Error');
+          this.loaderservice.hideLoader();
           return;
         }
 
@@ -100,10 +108,11 @@ export class AccountService {
         localStorage.setItem('loginData', JSON.stringify(user));
 
         this.toastr.success('Login successful', 'Success');
-
+        this.loaderservice.hideLoader();
         this.router.navigate(['Home']);
       },
       (error) => {
+        this.loaderservice.hideLoader();
         this.toastr.error('An unexpected error occurred. Please try again later.', 'Error');
         console.error(error);
       }
@@ -112,11 +121,13 @@ export class AccountService {
 
 
   logoutApi() {
+    this.loaderservice.showLoader();
     this.loginSubject.next({});
     this.isUserLoggedInSubject.next(false);
     this.tokenSubject.next('');
     localStorage.clear();
     this.toastr.success('See you later', 'Success');
+    this.loaderservice.hideLoader();
   }
 
 }
