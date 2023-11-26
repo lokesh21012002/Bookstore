@@ -19,3 +19,16 @@
   overflow-y: scroll;
   background: var(--secondarybg);
 }
+
+.loader{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader img{
+  height: 100%;
+  width: 100%;
+}
