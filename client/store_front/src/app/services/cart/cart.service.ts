@@ -1,4 +1,5 @@
-import { Injectable, OnInit } from '@angular/core';
+import { LoaderService } from './../loader/loader.service';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from '../account/account.service';
 import { ToastrService } from 'ngx-toastr';
@@ -11,10 +12,11 @@ export class CartService{
   isLoggedIn: boolean = false;
   cartItems: any = [];
 
-  constructor(private router: Router, private toastr: ToastrService, private accountservice : AccountService) { }
+  constructor(private loaderservice : LoaderService,private router: Router, private toastr: ToastrService, private accountservice : AccountService) { }
 
   addToCart(item: any) {
     try {
+      this.loaderservice.showLoader();
       this.cartItems.push(item);
       localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
 
@@ -35,12 +37,14 @@ export class CartService{
       console.error(error);
     }
     finally {
+      this.loaderservice.hideLoader();
       this.toastr.success('Book added to cart successfully.', 'Success');
     }
   }
 
   getCartItems() {
     try {
+      this.loaderservice.showLoader();
       if (this.cartItems.length === 0)
         this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
       return this.cartItems;
@@ -49,10 +53,14 @@ export class CartService{
       console.error(error);
       return [];
     }
+    finally {
+      this.loaderservice.hideLoader();
+    }
   }
 
   removeFromCart(item: any) {
     try {
+      this.loaderservice.showLoader();
       const index = this.cartItems.indexOf(item);
       if (index > -1) {
         this.cartItems.splice(index, 1);
@@ -76,17 +84,22 @@ export class CartService{
       console.error(error);
     }
     finally {
+      this.loaderservice.hideLoader();
       this.toastr.success('Book removed from cart successfully.', 'Success');
     }
   }
 
   clearCart() {
     try {
+      this.loaderservice.showLoader();
       this.cartItems = [];
       localStorage.removeItem('cartItems');
     } catch (error) {
       this.toastr.error('An unexpected error occurred while clearing the cart.', 'Error');
       console.error(error);
+    }
+    finally {
+      this.loaderservice.hideLoader();
     }
   }
 
