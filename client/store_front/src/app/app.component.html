@@ -5,7 +5,7 @@
   </div>
 
   <div class="dynamiccontent">
-    <div class="loader">
+    <div *ngIf="loader" class="loader">
       <img src="https://cdn.dribbble.com/users/66340/screenshots/3089041/media/7c05b4a97f79596e560efb67ad53f4d0.gif" alt="Loader">
     </div>
     <router-outlet></router-outlet>
