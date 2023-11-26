@@ -19,6 +19,7 @@ body{
     height: 100vh;
     color: white;
     background: var(--primarybg);
+    text-align: center;
 }
 
 a{

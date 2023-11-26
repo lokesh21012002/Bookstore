@@ -33,7 +33,7 @@ nav{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
+    gap: 4rem;
 }
 
 .roledash a{
