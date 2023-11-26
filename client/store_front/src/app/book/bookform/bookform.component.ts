@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BookformComponent {
 
-  token: any = {};
+  token: any = "";
 
   files: any = {}
   bookData: any = {}
@@ -32,6 +32,8 @@ export class BookformComponent {
         this.bookData = json.data;
       })
     }
+    this.token = localStorage.getItem('token');
+    this.bookData = JSON.parse(localStorage.getItem('bookData') || '{}');
   }
 
   createBook(data: bookCreation){

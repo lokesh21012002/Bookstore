@@ -75,11 +75,13 @@
 }
 
 .productimage{
-    width: 50%;
+    width: 75%;
+    height: 15rem;
 }
 
 .productimage img{
     width: 100%;
+    height: 100%;
 }
 
 .orderdescription{

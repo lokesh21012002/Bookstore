@@ -253,7 +253,7 @@ class GenerateBill(APIView):
             # Create data for the table
             table_data = [
                 ["Receipt Number", str(invoicedata.receiptnumber)],
-                ["Amount Paid", str(invoicedata.amountpaid)],
+                ["Amount Paid", "$" + str(invoicedata.amountpaid)],
                 ["Date", str(invoicedata.created_at.strftime('%Y-%m-%d'))],
                 ["Name", str(orderdata.buyer.user.name)],
                 ["Book Title", str(orderdata.book.title)],
@@ -261,7 +261,7 @@ class GenerateBill(APIView):
                 ["Genre", str(orderdata.book.genre)],
                 ["Sold By", str(orderdata.seller.user.name)],
                 ["Quantity", str(orderdata.quantity)],
-                ["Price", str(orderdata.book.price)],
+                ["Price", "$" + str(orderdata.book.price)],
                 ["Address", str(orderdata.address)],
                 ["Status", "Dispatched"],
             ]

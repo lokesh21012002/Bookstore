@@ -51,6 +51,7 @@
     text-align: center;
     padding: .5rem;
     border: 3px solid var(--primarybg);
+    width: 20rem;
 }
 
 .books img{

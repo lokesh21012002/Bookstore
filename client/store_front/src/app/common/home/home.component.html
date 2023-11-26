@@ -71,6 +71,6 @@
   </section>
 </div>
 
-<div *ngIf="bookData.length === 0 || searchedBooks.length === 0" class="nodata">
+<div *ngIf="bookData.length === 0 && loginData.role === 'Buyer'" class="nodata">
   <img src="https://cdn.dribbble.com/users/633133/screenshots/3218559/media/3490827c0bba959b5bc92bb031f5dc05.png?resize=800x600&vertical=center" alt="">  
 </div>

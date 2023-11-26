@@ -69,7 +69,7 @@ updateOrderApi(data: any, token: any, id: number) {
     },
     (error) => {
       this.loaderservice.hideLoader();
-      this.toastr.error('Order update failed', 'Error');
+      this.toastr.error('Order update failed, please try again', 'Error');
       console.error(error);
     }
   );

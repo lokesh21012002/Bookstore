@@ -2,10 +2,14 @@
         
     <h1 *ngIf="loginData && loginData.role === 'Buyer'">YOUR ORDERS</h1>
     <h1 *ngIf="loginData && loginData.role === 'Seller'">YOUR BOOKS</h1>
-
+    
 </div>
     
 <div *ngIf="loginData && loginData.role === 'Seller'" class="mybooks">
+
+        <div *ngIf="myBooksData.length == 0" class="nodata">
+            <img src="https://cdn.dribbble.com/users/633133/screenshots/3218559/media/3490827c0bba959b5bc92bb031f5dc05.png?resize=800x600&vertical=center" alt="">  
+        </div>
         
         <div class="books" *ngFor="let myBooksData of myBooksData">
             <div class="cover">
@@ -27,6 +31,10 @@
     
     
     <div *ngIf="loginData && loginData.role === 'Buyer'" class="showorders">
+        
+        <div *ngIf="orderDetails.length == 0" class="nodata">
+            <img src="https://cdn.dribbble.com/users/633133/screenshots/3218559/media/3490827c0bba959b5bc92bb031f5dc05.png?resize=800x600&vertical=center" alt="">  
+        </div>
         
         <div *ngFor="let orderData of orderDetails" class="orderdescription">
         
@@ -78,8 +86,5 @@
       <input type="number" name="quantity" [(ngModel)]="selectedOrderData.quantity" placeholder="Total Book Quantity" />
       <button type="submit">EDIT ORDER</button>
     </form>
-</div>
-
-<div *ngIf="myBooksData.length === 0 || orderDetails.length === 0" class="nodata">
-    <img src="https://cdn.dribbble.com/users/633133/screenshots/3218559/media/3490827c0bba959b5bc92bb031f5dc05.png?resize=800x600&vertical=center" alt="">  
+    
 </div>

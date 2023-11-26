@@ -57,7 +57,6 @@ export class MybooksComponent implements OnInit{
       })
     }
 
-
   }
 
   initiateEditOrder(book : any){
