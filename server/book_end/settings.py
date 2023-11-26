@@ -143,7 +143,10 @@ SIMPLE_JWT = {
 
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "http://127.0.0.1:4200",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
