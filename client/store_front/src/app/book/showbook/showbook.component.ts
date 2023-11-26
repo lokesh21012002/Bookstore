@@ -36,6 +36,8 @@ export class ShowbookComponent implements OnInit{
       this.loginData = data;
     })
 
+    this.loginData = JSON.parse(localStorage.getItem('loginData') || '{}');
+
   }
 
   addToCart(data: any){

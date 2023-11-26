@@ -15,8 +15,9 @@ form{
 
 form input{
     padding: 1rem;
+    width: 30rem;
 }
 
 form button{
-    padding : 1rem;
+    padding : 1.5rem;
 }

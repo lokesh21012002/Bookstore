@@ -22,6 +22,7 @@
     align-items: center;
     border: 2px solid var(--primarybg);
     padding: 1rem;
+    width: 20rem;
 }
 
 .options{
@@ -36,6 +37,7 @@
 
 .cover{
     height: 20rem;
+    width: 100%;
 }
 
 .cover img{

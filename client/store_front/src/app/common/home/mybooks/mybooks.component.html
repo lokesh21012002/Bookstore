@@ -11,7 +11,7 @@
             <div class="cover">
                 <img src={{myBooksData?.cover}} alt="Book">
             </div>
-            <p>{{myBooksData.title}}</p>
+            <h3>{{myBooksData.title}}</h3>
             <p>BY - {{myBooksData.author}}</p>
             <p>${{myBooksData.price}}</p>
             
@@ -36,7 +36,7 @@
                     <div class="productimage">
                         <img src={{orderData?.book.cover}} alt="Cover">
                     </div>
-                    <p>TITLE : {{orderData?.book.title}}</p>
+                    <h3>TITLE : {{orderData?.book.title}}</h3>
                     <p>AUTHOR : {{orderData?.book.author}}</p>
                     <p>PRICE : ${{orderData?.book.price}}</p>
                     <div class="actions">
@@ -78,4 +78,8 @@
       <input type="number" name="quantity" [(ngModel)]="selectedOrderData.quantity" placeholder="Total Book Quantity" />
       <button type="submit">EDIT ORDER</button>
     </form>
+</div>
+
+<div *ngIf="myBooksData.length === 0 || orderDetails.length === 0" class="nodata">
+    <img src="https://cdn.dribbble.com/users/633133/screenshots/3218559/media/3490827c0bba959b5bc92bb031f5dc05.png?resize=800x600&vertical=center" alt="">  
 </div>
