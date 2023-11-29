@@ -19,7 +19,6 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 
 def generate_receipt_number(length=8):
-    # Generate a random receipt number with the specified length using digits
     receipt_number = ''.join(random.choice('0123456789') for _ in range(length))
 
     return receipt_number
@@ -240,17 +239,14 @@ class GenerateBill(APIView):
             if user.role == 'Seller':
                 return Response({'status': 'error', 'message' : 'Seller cannot generate bill'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Create a file-like buffer to receive PDF data.
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="bill.pdf"'
 
-            # Create the PDF object, using the response object as its "file."
             p = SimpleDocTemplate(response, pagesize=letter)
 
             invoicedata = Invoice.objects.get(pk=pk)
             orderdata = Order.objects.get(id=invoicedata.order.pk)
 
-            # Create data for the table
             table_data = [
                 ["Receipt Number", str(invoicedata.receiptnumber)],
                 ["Amount Paid", "$" + str(invoicedata.amountpaid)],
@@ -266,10 +262,8 @@ class GenerateBill(APIView):
                 ["Status", "Dispatched"],
             ]
 
-            # Create the table
             table = Table(table_data, colWidths=[200, 200], rowHeights=30)
 
-            # Style the table
             style = TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.white),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
@@ -277,11 +271,10 @@ class GenerateBill(APIView):
                 ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
                 ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
                 ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black),  # Add grid lines
+                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
             ])
             table.setStyle(style)
 
-            # Create a title above the table in the center
             title = "Book Purchase Invoice"
             title_style = TableStyle([
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
@@ -293,7 +286,6 @@ class GenerateBill(APIView):
             title_table = Table([[title]])
             title_table.setStyle(title_style)
 
-            # Build the PDF
             elements = [title_table, table]
             p.build(elements)
             return response
