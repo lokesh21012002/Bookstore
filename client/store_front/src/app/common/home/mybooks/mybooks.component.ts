@@ -43,7 +43,7 @@ export class MybooksComponent implements OnInit{
     {
       this.bookserice.getSellerBooksApi(this.token).subscribe((response) => {
         const jsondata: any = response.body;
-        this.myBooksData = jsondata.data.data.books;
+        this.myBooksData = jsondata.data;
         console.warn(this.myBooksData);
       })
     }

@@ -1,4 +1,5 @@
 from django.http import QueryDict
+import requests
 from rest_framework.response import Response
 from rest_framework import status
 from account.models import Seller
@@ -19,67 +20,75 @@ class IsAuthenticatedOrReadOnly(IsAuthenticated):
 class BookView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     def post(self, request):
+        
         user = request.user
-        seller = Seller.objects.get(user=user)
+
+        try:
+            seller = Seller.objects.get(user=user)
+        except Seller.DoesNotExist:
+            return Response({'status': 'error', 'message': 'Seller not found'}, status=status.HTTP_404_NOT_FOUND)
+
         if user.role == 'Buyer':
-            return Response({'status': 'error', 'message' : 'Buyer cannot create book'}, status=status.HTTP_400_BAD_REQUEST)
-        jsondata = request.data.copy()
-        jsondata['seller'] = seller.pk
-        serialize = BookSerializer(data=jsondata)
-        if serialize.is_valid():
-            serialize.save()
-            return Response({'status': 'ok', 'message' : 'Book created successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
-        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Buyer cannot create book'}, status=status.HTTP_400_BAD_REQUEST)
+
+        data = request.POST.copy() 
+        data['seller'] = seller.id
+
+        files = {
+            'cover': request.FILES.get('cover')
+        }
+
+        try:
+            microserviceresponse = requests.post('http://localhost:3000/create', data=data, files=files)
+            microserviceresponse.raise_for_status()
+            return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
+        except requests.RequestException as e:
+            return Response({'status': 'error', 'message': f'Microservice request failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     def put(self, request, pk):
         user = request.user
         if user.role == 'Buyer':
             return Response({'status': 'error', 'message' : 'Buyer cannot update book'}, status=status.HTTP_400_BAD_REQUEST)
-        book = Book.objects.get(pk=pk)
-        serialize = BookSerializer(book, data=request.data, partial=True)
-        if serialize.is_valid():
-            serialize.save()
-            return Response({'status': 'ok', 'message' : 'Book updated successfully', 'data' : serialize.data}, status=status.HTTP_200_OK)
-        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        data = request.POST.copy() 
+
+        files = {
+            'cover': request.FILES.get('cover')
+        }
+
+        try:
+            microserviceresponse = requests.put('http://localhost:3000/update/'+str(pk), data=data, files=files)
+            microserviceresponse.raise_for_status()
+            return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
+        except requests.RequestException as e:
+            return Response({'status': 'error', 'message': f'Microservice request failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
     def delete(self, request, pk):
         user = request.user
         if user.role == 'Buyer':
             return Response({'status': 'error', 'message' : 'Buyer cannot delete book'}, status=status.HTTP_400_BAD_REQUEST)
-        book = Book.objects.get(pk=pk)
-        book.delete()
-        return Response({'status': 'ok', 'message' : 'Book deleted successfully'}, status=status.HTTP_200_OK)
+        microserviceresponse = requests.delete('http://localhost:3000/delete/'+str(pk))
+        return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
     
     def get(self, request, pk=None):
+        
+        if pk is not None:
+            microserviceresponse = requests.get('http://localhost:3000/'+str(pk))
+            return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
+
         query_params = request.query_params
 
         title = query_params.get('title', '').strip()
         author = query_params.get('author', '').strip()
         genre = query_params.get('genre', '').strip()
 
-        filter_conditions = Q()
+        if title or author or genre:
+            microserviceresponse = requests.get('http://localhost:3000/search?title='+title+'&author='+author+'&genre='+genre)
+            return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
 
-        if title:
-            filter_conditions &= Q(title__icontains=title)
+        microserviceresponse = requests.get('http://localhost:3000/')
+        return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
 
-        if author:
-            filter_conditions &= (Q(author__icontains=author))
-
-        if genre:
-            filter_conditions &= Q(genre__icontains=genre)
-
-        if pk:
-            book = Book.objects.get(pk=pk)
-            seller = Seller.objects.get(pk=book.seller.pk)
-            
-            serializer = SerializeBook(book)
-
-            return Response({'status': 'ok', 'message': 'Book fetched successfully', 'data': serializer.data}, status=status.HTTP_200_OK)
-        else:
-            books = Book.objects.filter(filter_conditions)
-            serializer = SerializeBook(books, many=True)
-            return Response({'status': 'ok', 'message': 'Books fetched successfully', 'data': serializer.data}, status=status.HTTP_200_OK)   
-    
 class BookSeller(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -88,12 +97,6 @@ class BookSeller(APIView):
         if user.role == 'Buyer':
             return Response({'status': 'error', 'message' : 'Buyer cannot fetch books'}, status=status.HTTP_400_BAD_REQUEST)
         seller = Seller.objects.get(user=user)
-        sellerserializer = SellerSerializer(seller)
-        books = Book.objects.filter(seller=seller)
-        serializer = BookSerializer(books, many=True)
-        data = {'data' : {
-            'books' : serializer.data,
-            'seller' : sellerserializer.data
-        }}
-        return Response({'status': 'ok', 'message': 'Books fetched successfully', 'data': data}, status=status.HTTP_200_OK)
+        microserviceresponse = requests.get('http://localhost:3000/sellerbooks/'+str(seller.id))
+        return Response(microserviceresponse.json(), status=status.HTTP_200_OK)
     
