@@ -42,7 +42,7 @@
 
 .books{
     display: flex;
-    width: 100%;
+    width: 20rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
