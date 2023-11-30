@@ -108,12 +108,6 @@ REST_FRAMEWORK = {
     )
 }
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dvpsn2zq3',
-    'API_KEY': '999358516461599',
-    'API_SECRET': 'NhVxmWe9G5X7dIGlFC3qM6ls86o'
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
