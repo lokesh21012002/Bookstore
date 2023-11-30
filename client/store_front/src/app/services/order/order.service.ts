@@ -37,7 +37,7 @@ createOrderApi(data: any, token: any) {
 getOrdersApi(token: any) {
   try{
     this.loaderservice.showLoader();
-    const url = "http://localhost:8000/api/v1/account/order";
+    const url = "http://localhost:8000/api/v1/account/order/";
   
     return this.http.get(url, { 'observe': 'response', headers: { 'Authorization': 'Bearer ' + token } }).pipe(
       catchError(error => {

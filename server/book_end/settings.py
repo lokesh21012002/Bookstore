@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
-import cloudinary
 import pymysql
 
 pymysql.install_as_MySQLdb()
@@ -46,8 +45,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'account',
     'book',
-    'cloudinary',
-    'cloudinary_storage',
     'corsheaders',
 ]
 
@@ -171,4 +168,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account.User'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
