@@ -20,6 +20,8 @@ export class AccountService {
   private isUserLoggedInSubject = new BehaviorSubject<boolean>(false);
   public isUserLoggedIn$ = this.isUserLoggedInSubject.asObservable();
 
+  private backendUrl = 'http://localhost:8000/api/v1/account/';
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -28,6 +30,9 @@ export class AccountService {
   ) {}
 
   registerApi(data: any) {
+
+    this.backendUrl += "register/";
+
     const userdata = data.userdata;
     const roledata = data.roledata;
 
@@ -50,7 +55,7 @@ export class AccountService {
 
     this.loaderservice.showLoader();
 
-    this.http.post('http://localhost:8000/api/v1/account/register/', data, { observe: 'response' }).subscribe(
+    this.http.post(this.backendUrl, data, { observe: 'response' }).subscribe(
       (response) => {
         const httpresponse: any = response;
 
@@ -82,12 +87,15 @@ export class AccountService {
     );
   }
   loginApi(data: login) {
+
+    this.backendUrl += "login/";
+
     if (!data.email || !data.password) {
       this.toastr.error('Please enter both email and password', 'Error');
       return;
     }
     this.loaderservice.showLoader();
-    this.http.post('http://localhost:8000/api/v1/account/login/', data, { observe: 'response' }).subscribe(
+    this.http.post(this.backendUrl, data, { observe: 'response' }).subscribe(
       (response) => {
         const httpresponse: any = response;
 
